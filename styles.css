@@ -20,8 +20,8 @@
         /* Ajuste del fondo en dispositivos móviles */
         @media (max-width: 768px) {
             body {
-                background-image: none; /* Sin imagen de fondo en móviles */
-                background-color: #ff7e5f; /* Color degradado en lugar de imagen */
+                background-image: none; /* Elimina la imagen de fondo en móviles */
+                background-color: #48c20170; /* Fondo naranja vivo en móviles */
             }
         }
 
