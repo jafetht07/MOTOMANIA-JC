@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Motos JC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-image: url('FNG.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
+            background-size: contain; /* Asegura que la imagen de fondo se ajuste completamente sin recortarse */
+            background-position: center; /* Centra la imagen de fondo */
+            background-repeat: no-repeat; /* Evita la repetición de la imagen */
+            height: 100vh; /* Asegura que el fondo ocupe toda la altura de la ventana */
+            color: white; /* Cambia el color del texto para que sea legible sobre el fondo */
+        }
+        .menu {
+            margin-top: 20px;
+        }
+        .menu select {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .saludo {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .moto-section {
+            display: none; /* Ocultar secciones de motos inicialmente */
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para las secciones */
+            padding: 20px;
+            border-radius: 10px; /* Bordes redondeados */
+            margin: 20px;
+        }
+        h2 {
+            margin-top: 0; /* Evitar márgenes innecesarios en los encabezados */
+        }
+        .moto-item {
+            margin: 15px 0; /* Espacio entre los elementos de la moto */
+        }
+        .moto-image {
+            width: 110%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+            height: auto; /* Mantiene la proporción de la imagen */
+            border-radius: 10px; /* Esquinas redondeadas para las imágenes */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra alrededor de las imágenes */
+        }
+        button {
+            background-color: #ff4757; /* Rojo vibrante */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px; /* Bordes redondeados */
+            transition: background-color 0.3s; /* Efecto de transición al cambiar de color */
+        }
+        button:hover {
+            background-color: #e84118; /* Rojo oscuro al pasar el mouse */
+        }
+        footer {
+            margin-top: 20px; /* Espacio arriba del pie de página */
+            padding: 10px; /* Espacio dentro del pie de página */
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro para el pie */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a la Página de Motos JC</h1>
+        <div class="saludo">
+            ¡Descubre nuestro increíble mundo de motocicletas!
+        </div>
+        <div class="menu">
+            <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
+            <select id="marca" onchange="showModels()">
+                <option value="">--Seleccionar--</option>
+                <option value="honda">Honda</option>
+                <option value="yamaha">Yamaha</option>
+                <option value="suzuki">Suzuki</option>
+                <option value="Formula">Formula</option>
+                <option value="Freedom">Freedom</option>
+                <option value="Serpento">Serpento</option>
+                <option value="Haojue">Haojue</option>
+                <option value="Bajaj">Bajaj</option>
+                <option value="Vento">Vento</option>
+                <option value="TVS">TVS</option>
+                <option value="Benelli">Benelli</option>
+                <option value="Cuadraciclos">Cuadraciclos</option>
+                <option value="Katana">Katana</option>
+                <option value="BICIMOTOS">BICIMOTOS</option>
+
+
+            </select>
+        </div>
+    </header>
+
+
+
+    <main>
+        <section id="honda" class="moto-section">
+            <h2>Honda</h2>
+            <div class="moto-item">
+                <img src="Honda XR190L.jpeg" alt="Honda XR190L" class="moto-image">
+                <h3>Modelo: XR190L</h3>
+                <p>Cilindraje: 190cc</p>
+                <p>Precio: ₡2.160.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Honda XR190L')">Cotizar</button>
+            </div>
+            <div class="moto-item">
+                <img src="Honda CRF300L.jpeg" alt="Honda CRF300L" class="moto-image">
+                <h3>Modelo: CRF300L</h3>
+                <p>Cilindraje: 300cc</p>
+                <p>Precio: ₡4.555.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Honda CRF300L')">Cotizar</button>
+            </div>
+            <div class="moto-item">
+                <img src="Honda NAVI 110.jpeg" alt="Honda NAVI 110" class="moto-image">
+                <h3>Marca: Honda</h3>
+                <p>Modelo: NAVI 110</p>
+                <p>Cilindraje: 110cc</p>
+                <p>Precio: ₡1.125.000</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Honda NAVI 110')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Honda XRE300.jpeg" alt="Honda XRE300" class="moto-image">
+                <h3>Marca: Honda </h3>
+                <p>Modelo: XRE300</p>
+                <p>Cilindraje: 300cc</p>
+                <p>Precio: ₡4.100.000</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Honda XRE300')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Honda XBLADE 160.jpeg" alt="Honda XBLADE 160" class="moto-image">
+                <h3>Marca: HONDA </h3>
+                <p>Modelo: XBLADE</p>
+                <p>Cilindraje: 160cc</p>
+                <p>Precio: ₡1.477.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Honda XBLADE 160')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Honda CRF250F.jpeg" alt="Honda CRF250F" class="moto-image">
+                <h3>Marca: HONDA </h3>
+                <p>Modelo: CRF250F</p>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡3.909.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Honda CRF250F')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Honda CB190R.jpeg" alt="Honda CB190R" class="moto-image">
+                <h3>Marca: Honda</h3>
+                <p>Modelo: CB190R</p>
+                <p>Cilindraje: 190cc</p>
+                <p>Precio: ₡2.145.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Honda CB190R')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Honda CB300 TWISTER.jpeg" alt="Honda CB300 TWISTER" class="moto-image">
+                <h3>Marca: Honda</h3>
+                <p>Modelo: CB300 TWISTER</p>
+                <p>Cilindraje: 300cc</p>
+                <p>Precio: ₡2.917.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Honda CB300 TWISTER')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Honda XR250 TORNADO.jpeg" alt="Honda XR250 TORNADO" class="moto-image">
+                <h3>Marca: Honda</h3>
+                <p>Modelo: XR250 T0RNADO</p>
+                <p>Cilindraje: 250CC</p>
+                <p>Precio: ₡3.753.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Honda XR250 TORNADO')">Contactar</button>
+            </div>
+
+
+
+
+        </section>
+
+        <section id="Formula" class="moto-section">
+            <h2>Formula</h2>
+            <div class="moto-item">
+                <img src="Formula NANO SPEED 230.jpeg" alt="Formula NANO SPEED 230" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: NANO SPEED</p>
+                <p>Cilindraje: 230cc</p>
+                <p>Precio: ₡1.191.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula NANO SPEED 230')">Contactar</button>
+            </div>
+    
+            <div class="moto-item">
+                <img src="Formula NANO R 200.jpeg" alt="Formula NANO R 200" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: NANO R</p>
+                <p>Cilindraje: 200cc</p>
+                <p>Precio: ₡1.191.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula NANO R 200')">Contactar</button>
+            </div>
+    
+            <div class="moto-item">
+                <img src="Formula CYCLONE 250.jpeg" alt="Formula CYCLONE 250" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: CYCLONE</p>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡1.550.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula CYCLONE 250')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Formula KPT.jpeg" alt="Formula KPT" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: KPT</p>
+                <p>Cilindraje: 200cc</p>
+                <p>Precio: ₡2.149.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula KPT')">Contactar</button>
+            </div>
+    
+            <div class="moto-item">
+                <img src="Formula NANO BASIC.jpeg" alt="Formula NANO BASIC" class="moto-image">
+                <h3>Marca: Formula</h3>
+                <p>Modelo: NANO BASIC</p>
+                <p>Cilindraje: 200cc</p>
+                <p>Precio: ₡1.048.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Formula NANO BASIC')">Contactar</button>
+            </div>
+    
+            <div class="moto-item">
+                <img src="Formula NEXUS.jpeg" alt="Formula NEXUS" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: NEXUS</p>
+                <p>Cilindraje: 150cc</p>
+                <p>Precio: ₡1.072.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula NEXUS')">Contactar</button>
+            </div>
+    
+            <div class="moto-item">
+                <img src="Formula FABIO.jpeg" alt="Formula FABIO" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: FABIO</p>
+                <p>Cilindraje: 200cc</p>
+                <p>Precio: ₡1.251.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula FABIO')">Contactar</button>
+            </div>
+    
+            <div class="moto-item">
+                <img src="Formula MAGNUM.jpeg" alt="Formula MAGNUM" class="moto-image">
+                <h3>Marca: Formula</h3>
+                <p>Modelo: MAGNUM</p>
+                <p>Cilindraje: 200cc</p>
+                <p>Precio: ₡1.131.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula MAGNUM')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Formula NANO 250S.jpeg" alt="Formula NANO 250S" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: NANO 250S</p>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡1.311.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Formula NANO 250S')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Formula GO 150.jpeg" alt="Formula GO 150" class="moto-image">
+                <h3>Marca: Formula</h3>
+                <p>Modelo: GO 150</p>
+                <p>Cilindraje: 150cc</p>
+                <p>Precio: ₡1.072.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula GO 150')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Formula LX250.jpeg" alt="Formula LX250" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: LX250</p>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡1.435.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula LX250')">Contactar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Formula REBEL 250.jpeg" alt="Formula REBEL 250" class="moto-image">
+                <h3>Marca: Formula </h3>
+                <p>Modelo: REBEL</p>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡1.499.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Formula REBEL 250')">Contactar</button>
+            </div>
+    
+
+    
+        </section>
+
+        <section id="yamaha" class="moto-section">
+            <h2>Yamaha</h2>
+            <div class="moto-item">
+                <img src="Yamaha R3 2024.jpeg" alt="Yamaha R3 2024" class="moto-image">
+                <h3>Modelo: R3</h3>
+                <p>Cilindraje: 321cc</p>
+                <p>Precio: ₡5.010.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Yamaha R3 2024')">Cotizar</button>
+            </div>
+        
+                <div class="moto-item">
+                    <img src="Yamaha FZN150D.jpeg" alt="Yamaha FZN150D" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: FZN150 D</p>
+                    <p>Cilindraje: 150cc</p>
+                    <p>Precio: ₡2.055.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha FZN150D')">Contactar</button>
+                </div>
+        
+                <div class="moto-item">
+                    <img src="Yamaha FZN150.jpeg" alt="Yamaha FZN150" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: FZN150</p>
+                    <p>Cilindraje: 150cc</p>
+                    <p>Precio: ₡2.055.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha FZN150')">Contactar</button>
+                </div>
+        
+                <div class="moto-item">
+                    <img src="Yamaha FZN150DA.jpeg" alt="Yamaha FZN150DA" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: FZN150 DA</p>
+                    <p>Cilindraje: 150cc</p>
+                    <p>Precio: ₡2.898.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha FZN150DA')">Contactar</button>
+                </div>
+
+                <div class="moto-item">
+                    <img src="Yamaha XTZ150.jpeg" alt="Yamaha XTZ150" class="moto-image">
+                    <h3>Marca: Yamaha </h3>
+                    <p>Modelo: XTZ150</p>
+                    <p>Cilindraje: 150cc</p>
+                    <p>Precio: ₡2.289.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha XTZ150')">Contactar</button>
+                </div>
+
+                <div class="moto-item">
+                    <img src="Yamaha FZN250.jpeg" alt="Yamaha FZN250" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: FZN250</p>
+                    <p>Cilindraje: 250CCcc</p>
+                    <p>Precio: ₡2.966.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha FZN250')">Contactar</button>
+                </div>
+
+        
+                <div class="moto-item">
+                    <img src="Yamaha XTZ125.jpeg" alt="Yamaha XTZ125" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: XTZ</p>
+                    <p>Cilindraje: 125cc</p>
+                    <p>Precio: ₡1.863.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha XTZ125')">Contactar</button>
+                </div>
+
+                <div class="moto-item">
+                    <img src="Yamaha YBR125 ED.jpeg" alt="Yamaha YBR125 ED" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: YBR</p>
+                    <p>Cilindraje: 125cc</p>
+                    <p>Precio: ₡1.547.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha YBR125 ED')">Contactar</button>
+                </div>
+
+                <div class="moto-item">
+                    <img src="Yamaha YBR125G.jpeg" alt="Yamaha YBR125G" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: YBR125G</p>
+                    <p>Cilindraje: 125cc</p>
+                    <p>Precio: ₡1.722.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha YBR125G')">Contactar</button>
+                </div>
+
+                <div class="moto-item">
+                    <img src="Yamaha MT03.jpeg" alt="Yamaha MT03" class="moto-image">
+                    <h3>Marca: Yamaha</h3>
+                    <p>Modelo: MT03</p>
+                    <p>Cilindraje: 321cc</p>
+                    <p>Precio: ₡4.777.900</p>
+                    <p>Año: 2024</p>
+                    <button onclick="sendMessage('Yamaha MT03')">Contactar</button>
+                </div>
+          
+
+            
+        </section>
+
+        <section id="suzuki" class="moto-section">
+            <h2>Suzuki</h2>
+            <div class="moto-item">
+                <img src="Suzuki GN125H 2025.jpeg" alt="Suzuki GN125H 2025" class="moto-image">
+                <h3>Modelo: GN125</h3>
+                <p>Cilindraje: 125cc</p>
+                <p>Precio: ₡1.660.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Suzuki GN125H')">Cotizar</button>
+            </div>
+            <div class="moto-item">
+                <img src="Suzuki GIXXER SFDI 150.jpeg" alt="Suzuki GIXXER SFDI 150" class="moto-image">
+                <h3>Modelo: GIXXER SFDI 150</h3>
+                <p>Cilindraje: 150cc</p>
+                <p>Precio: ₡2.207.900</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Suzuki GIXXER SFDI 150')">Cotizar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Suzuki VSTROM 250CC 2025.jpeg" alt="Suzuki VSTROM 250CC 2025" class="moto-image">
+                <h3>Modelo: VSTROM</h3>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡3.451.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Suzuki VSTROM 250CC 2025')">Cotizar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Suzuki GIXXER 250CC 2024.jpeg" alt="Suzuki GIXXER 250CC 2024" class="moto-image">
+                <h3>Modelo: GIXXER</h3>
+                <p>Cilindraje: 250cc</p>
+                <p>Precio: ₡3.153.150</p>
+                <p>Año: 2024</p>
+                <button onclick="sendMessage('Suzuki GIXXER 250CC 2024')">Cotizar</button>
+            </div>
+
+            <div class="moto-item">
+                <img src="Suzuki AX4 2025.jpeg" alt="Suzuki AX4 2025" class="moto-image">
+                <h3>Modelo: AX4</h3>
+                <p>Cilindraje: 115cc</p>
+                <p>Precio: ₡1.244.900</p>
+                <p>Año: 2025</p>
+                <button onclick="sendMessage('Suzuki AX4 2025')">Cotizar</button>
+            </div>
+
+
+                  <!-- Moto Item Template -->
+    
+
+      
+    </section>
+
+    <section id="Freedom" class="moto-section">
+        <h2>Freedom</h2>
+
+        <div class="moto-item">
+            <img src="Hercules VII 2025.jpeg" alt="Hercules VII 2025" class="moto-image">
+            <h3>Marca: Freedom</h3>
+            <p>Modelo: Hercules VII</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.361.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Hercules 200CC VII 2025')">Contactar</button>
+        </div>
+        
+        <div class="moto-item">
+            <img src="Freedom Carrera 2025.jpeg" alt="Freedom Carrera 2025" class="moto-image">
+            <h3>Marca: Freedom</h3>
+            <p>Modelo: Carrera 220</p>
+            <p>Cilindraje: 220cc</p>
+            <p>Precio: ₡1.711.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom Carrera 2025')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Freedom HR250.jpeg" alt="Freedom HR250" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: HR250</p>
+            <p>Cilindraje: 250cc</p>
+            <p>Precio: ₡1.528.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom HR250')">Contactar</button>
+        </div>
+
+      
+
+        <div class="moto-item">
+            <img src="Freedom HERCULES 150.jpeg" alt="Freedom HERCULES 150" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: HERCULES</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.167.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom HERCULES 150')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Freedom THUNDER 200.jpeg" alt="Freedom THUNDER 200" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: THUNDER</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.154.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom THUNDER 200')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Freedom HERCULES III.jpeg" alt="Freedom HERCULES III" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: HERCULES III</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.504.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom HERCULES III')">Contactar</button>
+        </div>
+
+
+        <div class="moto-item">
+            <img src="Freedom RX1 200.jpeg" alt="Freedom RX1 200" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: RX1</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡2.134.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom RX1 200')">Contactar</button>
+        </div>
+
+
+      
+        </div>
+
+
+        <div class="moto-item">
+            <img src="Freedom FIRE 200.jpeg" alt="Freedom FIRE 200" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: FIRE</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.118.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom FIRE 200')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Freedom ZS150.jpeg" alt="Freedom ZS150" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: ZS150</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡925.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom ZS150')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Freedom RX3.jpeg" alt="Freedom RX3" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: RX3</p>
+            <p>Cilindraje: 250cc</p>
+            <p>Precio: ₡3.495.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom RX3')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Freedom ZS200.jpeg" alt="Freedom ZS200" class="moto-image">
+            <h3>Marca: Freedom </h3>
+            <p>Modelo: ZS200</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.047.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Freedom ZS200')">Contactar</button>
+        </div>
+
+
+    </section>
+
+    <section id="Katana" class="moto-section">
+        <h2>Katana</h2>
+
+
+        <div class="moto-item">
+            <img src="Katana SX2 2025.jpeg" alt="Katana SX2 2025" class="moto-image">
+            <h3>Marca: Katana</h3>
+            <p>Modelo: SX2 250</p>
+            <p>Cilindraje: 250cc</p>
+            <p>Precio: ₡2.207.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Katana SX2 2025')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Katana SMX 2025.jpeg" alt="Katana SMX 2025" class="moto-image">
+            <h3>Marca: Katana</h3>
+            <p>Modelo: SMX 200</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.438.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Katana SMX 2025')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Katana GN200K.jpeg" alt="Katana GN200K" class="moto-image">
+            <h3>Marca: Katana</h3>
+            <p>Modelo: GN200K</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.066.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Katana GN200K')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Katana SMX150.jpeg" alt="Katana SMX150" class="moto-image">
+            <h3>Marca: Katana</h3>
+            <p>Modelo: SMX150</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.175.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Katana SMX150')">Contactar</button>
+        </div>
+
+    </section>
+
+    <section id="Serpento" class="moto-section">
+        <h2>Serpento</h2>
+
+        <div class="moto-item">
+            <img src="Serpento NOVA 150.jpeg" alt="Serpento NOVA 150" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: NOVA</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡955.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Serpento NOVA 150')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Serpento YARA 250R.jpeg" alt="Serpento YARA 250R" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: YARA R</p>
+            <p>Cilindraje: 250cc</p>
+            <p>Precio: ₡1.049.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('Serpento YARA 250R')">Contactar</button>
+        </div>
+
+
+        <div class="moto-item">
+            <img src="Serpento VIPER 250.jpeg" alt="Serpento VIPER 250" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: VIPER</p>
+            <p>Cilindraje: 250cc</p>
+            <p>Precio: ₡1.299.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('Serpento VIPER 250')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Serpento HURRICANE 250.jpeg" alt="Serpento HURRICANE 250" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: HURRICANE</p>
+            <p>Cilindraje: 250cc</p>
+            <p>Precio: ₡1.299.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('Serpento HURRICANE 250')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Serpento NAGA 200.jpeg" alt="Serpento NAGA 200" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: NAGA</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.099.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('Serpento NAGA 200')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Serpento TAYPAN R 200.jpeg" alt="Serpento TAYPAN R 200" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: TAYPAN</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡799.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('Serpento TAYPAN R 200')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Serpento ASPID 200.jpeg" alt="Serpento ASPID 200" class="moto-image">
+            <h3>Marca: Serpento </h3>
+            <p>Modelo: ASPID</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡848.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('Serpento ASPID 200')">Contactar</button>
+        </div>
+
+
+    </section>
+
+    <section id="Haojue" class="moto-section">
+        <h2>Haojue</h2>
+
+        <div class="moto-item">
+            <img src="Haojue DR160S.jpeg" alt="Haojue DR160S" class="moto-image">
+            <h3>Marca: Haojue</h3>
+            <p>Modelo: DR160S</p>
+            <p>Cilindraje: 160cc</p>
+            <p>Precio: ₡2.211.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Haojue DR160S')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Haojue NK150.jpeg" alt="Haojue NK150" class="moto-image">
+            <h3>Marca: Haojue</h3>
+            <p>Modelo: NK150 </p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.873.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Haojue NK150')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Haojue DM125S.jpeg" alt="Haojue DM125S" class="moto-image">
+            <h3>Marca: Haojue</h3>
+            <p>Modelo: DM125S </p>
+            <p>Cilindraje: 125cc</p>
+            <p>Precio: ₡1.305.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Haojue DM125S')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Haojue TZ150 PRO.jpeg" alt="Haojue TZ150 PRO" class="moto-image">
+            <h3>Marca: Haojue</h3>
+            <p>Modelo: TZ150 PRO </p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.545.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Haojue TZ150 PRO')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Haojue KA150.jpeg" alt="Haojue KA150" class="moto-image">
+            <h3>Marca: Haojue</h3>
+            <p>Modelo: KA150 </p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.547.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Haojue KA150')">Contactar</button>
+        </div>
+
+    </section>
+
+    <section id="Bajaj" class="moto-section">
+        <h2>Bajaj</h2>
+
+
+        <div class="moto-item">
+            <img src="Bajaj PULSAR NS200.jpeg" alt="Bajaj PULSAR NS200" class="moto-image">
+            <h3>Marca: Bajaj </h3>
+            <p>Modelo: PULSAR</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡2.125.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Bajaj PULSAR NS200')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Bajaj BOXER.jpeg" alt="Bajaj BOXER" class="moto-image">
+            <h3>Marca: Bajaj </h3>
+            <p>Modelo: BOXER</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.043.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Bajaj BOXER')">Contactar</button>
+        </div>
+
+        
+        <div class="moto-item">
+            <img src="Bajaj PULSAR NS160.jpeg" alt="Bajaj PULSAR NS160" class="moto-image">
+            <h3>Marca: Bajaj </h3>
+            <p>Modelo: PULSAR</p>
+            <p>Cilindraje: 160cc</p>
+            <p>Precio: ₡1.735.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Bajaj PULSAR NS160')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Bajaj DOMINAR 400.jpeg" alt="Bajaj DOMINAR 400" class="moto-image">
+            <h3>Marca: Bajaj </h3>
+            <p>Modelo: DOMINAR</p>
+            <p>Cilindraje: 400cc</p>
+            <p>Precio: ₡3.182.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Bajaj DOMINAR 400')">Contactar</button>
+        </div>
+
+
+
+        
+    </section>
+
+    <section id="Benelli" class="moto-section">
+        <h2>Benelli</h2>
+
+        <div class="moto-item">
+            <img src="Benelli TNT150I.jpeg" alt="Benelli TNT150I" class="moto-image">
+            <h3>Marca: Benelli </h3>
+            <p>Modelo: TNT</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.850.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Benelli TNT150I')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Benelli 180S.jpeg" alt="Benelli 180S" class="moto-image">
+            <h3>Marca: Benelli </h3>
+            <p>Modelo: 180S</p>
+            <p>Cilindraje: 180cc</p>
+            <p>Precio: ₡1.850.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Benelli 180S')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Benelli TNT250.jpeg" alt="Benelli TNT250 " class="moto-image">
+            <h3>Marca: Benelli </h3>
+            <p>Modelo: TNT</p>
+            <p>Cilindraje: 250CC</p>
+            <p>Precio: ₡2.558.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Benelli TNT250 ')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Benelli TNT135.jpeg" alt="Benelli TNT135 " class="moto-image">
+            <h3>Marca: Benelli </h3>
+            <p>Modelo: TNT</p>
+            <p>Cilindraje: 135CC</p>
+            <p>Precio: ₡2.096.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Benelli TNT135 ')">Contactar</button>
+        </div>
+
+             
+    </section>
+
+    <section id="Vento" class="moto-section">
+        <h2>Vento</h2>
+
+        <div class="moto-item">
+            <img src="Vento ALPINA.jpeg" alt="Vento ALPINA" class="moto-image">
+            <h3>Marca: Vento </h3>
+            <p>Modelo: ALPINA</p>
+            <p>Cilindraje: 300cc</p>
+            <p>Precio: ₡2.409.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Vento ALPINA')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Vento CROSSMAX 200CC.jpeg" alt="Vento CROSSMAX 200CC" class="moto-image">
+            <h3>Marca: Vento </h3>
+            <p>Modelo: CROSSMAX</p>
+            <p>Cilindraje: 200CC</p>
+            <p>Precio: ₡1.326.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Vento CROSSMAX 200CC')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Vento CRUISER 200CC.jpeg" alt="Vento CRUISER 200CC" class="moto-image">
+            <h3>Marca: Vento </h3>
+            <p>Modelo: CRUISER</p>
+            <p>Cilindraje: 200CC</p>
+            <p>Precio: ₡1.085.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Vento CRUISER 200CC')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Vento CROSSMAX 250CC.jpeg" alt="Vento CROSSMAX 250CC" class="moto-image">
+            <h3>Marca: Vento </h3>
+            <p>Modelo: CROSSMAX</p>
+            <p>Cilindraje: 250CC</p>
+            <p>Precio: ₡1.683.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Vento CROSSMAX 250CC')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Vento THRILLER.jpeg" alt=Vento THRILLER" class="moto-image">
+            <h3>Marca: Vento </h3>
+            <p>Modelo: THRILLER</p>
+            <p>Cilindraje: 200CC</p>
+            <p>Precio: ₡1.327.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Vento THRILLER')">Contactar</button>
+        </div>
+
+    </section>
+
+    <section id="TVS" class="moto-section">
+        <h2>TVS</h2>
+
+        <div class="moto-item">
+            <img src="TVS RAIDER.jpeg" alt="TVS RAIDER" class="moto-image">
+            <h3>Marca: TVS </h3>
+            <p>Modelo: RAIDER</p>
+            <p>Cilindraje: 125cc</p>
+            <p>Precio: ₡1.387.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('TVS RAIDER')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="TVS HLX.jpeg" alt="TVS HLX" class="moto-image">
+            <h3>Marca: TVS </h3>
+            <p>Modelo: HLX</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡1.146.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('TVS HLX')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="TVS APACHE 4V FI.jpeg" alt="TVS APACHE 4V FI" class="moto-image">
+            <h3>Marca: TVS </h3>
+            <p>Modelo: APACHE 4V FI</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡2.500.000</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('TVS APACHE 4V FI')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="TVS APACHE 4V.jpeg" alt="TVS APACHE 4V" class="moto-image">
+            <h3>Marca: TVS </h3>
+            <p>Modelo: APACHE 4V</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.809.000</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('TVS APACHE 4V')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="TVS APACHE RTR 160 4V.jpeg" alt="TVS APACHE RTR 160 4V" class="moto-image">
+            <h3>Marca: TVS </h3>
+            <p>Modelo: APACHE RTR 160 4V</p>
+            <p>Cilindraje: 160cc</p>
+            <p>Precio: ₡1.750.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('TVS APACHE RTR 160 4V')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="TVS APACHE RTR 160.jpeg" alt="TVS APACHE RTR 160" class="moto-image">
+            <h3>Marca: TVS </h3>
+            <p>Modelo: APACHE RTR 160</p>
+            <p>Cilindraje: 160cc</p>
+            <p>Precio: ₡1.387.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('TVS APACHE RTR 160')">Contactar</button>
+        </div>
+
+
+    </section>
+
+    <section id="Cuadraciclos" class="moto-section">
+        <h2>Cuadraciclos</h2>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo KYMCO MXU300R.jpeg" alt="Cuadraciclo KYMCO MXU300R" class="moto-image">
+            <h3>Marca: KYMCO </h3>
+            <p>Modelo: MXU300R</p>
+            <p>Cilindraje: 300cc</p>
+            <p>Precio: ₡4.461.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo KYMCO MXU300R')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo KYMCO MXU400.jpeg" alt="Cuadraciclo KYMCO MXU400" class="moto-image">
+            <h3>Marca: KYMCO </h3>
+            <p>Modelo: MXU400</p>
+            <p>Cilindraje: 400cc</p>
+            <p>Precio: ₡5.344.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo KYMCO MXU400')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo XWOLF 200.jpeg" alt="Cuadraciclo XWOLF 200" class="moto-image">
+            <h3>Marca: LONCIN </h3>
+            <p>Modelo: XWOLF200</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡2.878.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo XWOLF 200')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo XWOLF 300.jpeg" alt="Cuadraciclo XWOLF 300" class="moto-image">
+            <h3>Marca: LONCIN </h3>
+            <p>Modelo: XWOLF300</p>
+            <p>Cilindraje: 300cc</p>
+            <p>Precio: ₡4.139.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo XWOLF 300')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo KYMCO MXU150.jpeg" alt="Cuadraciclo KYMCO MXU150" class="moto-image">
+            <h3>Marca: KYMCO </h3>
+            <p>Modelo: MXU150</p>
+            <p>Cilindraje: 150cc</p>
+            <p>Precio: ₡2.670.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo KYMCO MXU150')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo KYMCO MXU270I.jpeg" alt="Cuadraciclo KYMCO MXU270I" class="moto-image">
+            <h3>Marca: KYMCO </h3>
+            <p>Modelo: MXU270I</p>
+            <p>Cilindraje: 270cc</p>
+            <p>Precio: ₡4.360.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo KYMCO MXU270I')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="Cuadraciclo SERPENTO VENOM.jpeg" alt="Cuadraciclo SERPENTO VENOM" class="moto-image">
+            <h3>Marca: SERPENTO </h3>
+            <p>Modelo: VENOM</p>
+            <p>Cilindraje: 200cc</p>
+            <p>Precio: ₡1.799.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo SERPENTO VENOM')">Contactar</button>
+        </div>
+
+        
+        <div class="moto-item">
+            <img src="Cuadraciclo SERPENTO NIÑOS.jpeg" alt="Cuadraciclo SERPENTO NIÑOS" class="moto-image">
+            <h3>Marca: SERPENTO </h3>
+            <p>Modelo: PENTORA</p>
+            <p>Cilindraje: 110cc</p>
+            <p>Precio: ₡699.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('Cuadraciclo SERPENTO NIÑOS')">Contactar</button>
+        </div>
+
+    </section>
+
+    <section id="BICIMOTOS" class="moto-section">
+        <h2>BICIMOTOS</h2>
+
+        <div class="moto-item">
+            <img src="BICIMOTO SERPENTO BRAVO.jpeg" alt="BICIMOTO SERPENTO BRAVO" class="moto-image">
+            <h3>Marca: SERPENTO</h3>
+            <p>Modelo: BRAVO</p>
+            <p>Cilindraje: 110cc</p>
+            <p>Precio: ₡499.900</p>
+            <p>Año: 2025</p>
+            <button onclick="sendMessage('BICIMOTO SERPENTO BRAVO')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="BICIMOTO KATANA MINI.jpeg" alt="BICIMOTO KATANA MINI" class="moto-image">
+            <h3>Marca: KATANA</h3>
+            <p>Modelo: MINI</p>
+            <p>Cilindraje: 110cc</p>
+            <p>Precio: ₡573.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('BICIMOTO KATANA MINI')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="BICIMOTO KATANA MINI.jpeg" alt="BICIMOTO KATANA MINI" class="moto-image">
+            <h3>Marca: KATANA</h3>
+            <p>Modelo: MINI</p>
+            <p>Cilindraje: 110cc</p>
+            <p>Precio: ₡573.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('BICIMOTO KATANA MINI')">Contactar</button>
+        </div>
+
+        
+        <div class="moto-item">
+            <img src="BICIMOTO KLEERADER PRESTO.jpeg" alt="BICIMOTO KLEERADER PRESTO" class="moto-image">
+            <h3>Marca: KLEERADER</h3>
+            <p>Modelo: PRESTO</p>
+            <p>Cilindraje: 110cc</p>
+            <p>Precio: ₡674.500</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('BICIMOTO KLEERADER PRESTO')">Contactar</button>
+        </div>
+
+        <div class="moto-item">
+            <img src="BICIMOTO FORMULA SUPER.jpeg" alt="BICIMOTO FORMULA SUPER" class="moto-image">
+            <h3>Marca: FORMULA</h3>
+            <p>Modelo: SUPER</p>
+            <p>Cilindraje: 110cc</p>
+            <p>Precio: ₡535.900</p>
+            <p>Año: 2024</p>
+            <button onclick="sendMessage('BICIMOTO FORMULA SUPER')">Contactar</button>
+        </div>
+
+
+
+
+
+
+     
+        
+
+        </section>
+
+        <section id="Benelli" class="moto-section">
+            <h2>Benelli</h2>
+            <p>Información sobre las motos Benelli...</p>
+            <!-- Aquí puedes agregar los modelos de Kawasaki si tienes -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Página de Motos. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function showModels() {
+            const marca = document.getElementById('marca').value;
+            const sections = document.querySelectorAll('.moto-section');
+
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            if (marca) {
+                document.getElementById(marca).style.display = 'block';
+            }
+        }
+
+        function sendMessage(moto) {
+            const message = `¡Hola! Jafeth Estoy interesado en una motocicleta, me gustaria saber mas información sobre el modelo  ${moto}.`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/+50689354332?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script> 
+</body>
+
+</html>
+

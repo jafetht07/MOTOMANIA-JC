@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mundo Motor: La mejor tienda de motos con las últimas novedades y modelos.">
+    <title>Página de Mundo Motor</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            background-image: url('FNG.jpg'); /* Asegúrate que la imagen esté en la ubicación correcta */
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background-color: rgba(92, 16, 33, 0.952);
+            color: rgb(247, 236, 236);
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .motos {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .moto-item {
+            background-color: #4c6e6d;
+            border: 2px solid #130047;
+            padding: 20px;
+            margin: 20px;
+            display: inline-block;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            transition: transform 0.3s;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .moto-item:hover {
+            transform: translateY(-5px);
+            background-color: #ff323c;
+            border-color: #ff4757;
+        }
+
+        .moto-item h3 {
+            margin-top: 0;
+            color: #020631;
+        }
+
+        button {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                box-shadow: 0 0 0 transparent;
+            }
+            50% {
+                box-shadow: 0 0 10px rgba(255, 71, 87, 0.7);
+            }
+        }
+
+        button:hover {
+            background-color: #e84118;
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: #333;
+            color: rgb(238, 232, 232);
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .moto-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #130047;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        h3 {
+            font-size: 1.8em;
+            color: #2f3542;
+        }
+
+        @media (max-width: 768px) {
+            .moto-item {
+                width: 90%;
+                margin: 10px auto;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Mundo Motor</h1>
+    <nav>
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Motos</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="motos">
+        <div class="moto-item">
+            <img src="moto1.jpg" alt="Imagen de la Moto 1 - Modelo deportivo" class="moto-image"> <!-- Asegúrate que la imagen esté disponible -->
+            <h3>Moto 1</h3>
+            <button>Ver Detalles</button>
+        </div>
+        <div class="moto-item">
+            <img src="moto2.jpg" alt="Imagen de la Moto 2 - Modelo clásico" class="moto-image">
+            <h3>Moto 2</h3>
+            <button>Ver Detalles</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Mundo Motor. Todos los derechos reservados.</p>
+</footer>
+
+</body>
+</html>
