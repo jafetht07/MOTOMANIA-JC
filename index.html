@@ -13,7 +13,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('FTT.jpeg'); /* Imagen de fondo */
+            background-image: url('FTT.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -21,7 +21,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             color: rgba(232, 231, 236, 0.8);
         }
@@ -31,6 +30,7 @@
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
+            margin-top: 20px;
         }
         .header {
             background-color: #222;
@@ -42,24 +42,26 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 10px;
             padding: 20px;
         }
         .brand {
             background: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 120px;
+            width: 100px;
         }
         .brand img {
-            width: 80px;
+            width: 70px;
             height: auto;
         }
         .contact {
+            width: 90%;
+            max-width: 400px;
             margin-top: 20px;
-            padding: 20px;
+            padding: 15px;
             background: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -69,27 +71,52 @@
             margin: 10px;
             text-decoration: none;
             color: #007bff;
-            font-size: 18px;
+            font-size: 16px;
+        }
+        .menu {
+            margin: 20px 0;
+        }
+        .menu select {
+            padding: 10px;
+            font-size: 16px;
         }
         @media (max-width: 768px) {
             .brands-container {
-                flex-direction: column;
-                align-items: center;
+                flex-wrap: wrap;
             }
             .brand {
-                width: 90%;
+                width: 80px;
             }
             .contact a {
-                font-size: 16px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>Bienvenido a la Página de MotoMania JC</h1>
+        <h1>Bienvenido a MotoMania JC</h1>
         <p>¡Descubre nuestro increíble mundo de motocicletas!</p>
     </header>
+
+    <div class="menu">
+        <label for="marca">Seleccione la marca:</label>
+        <select id="marca" onchange="showModels()">
+            <option value="">--Seleccionar--</option>
+            <option value="honda">Honda</option>
+            <option value="yamaha">Yamaha</option>
+            <option value="suzuki">Suzuki</option>
+            <option value="bajaj">Bajaj</option>
+            <option value="tvs">TVS</option>
+            <option value="haojue">Haojue</option>
+            <option value="vento">Vento</option>
+            <option value="formula">Formula</option>
+            <option value="freedom">Freedom</option>
+            <option value="serpento">Serpento</option>
+            <option value="benelli">Benelli</option>
+            <option value="katana">Katana</option>
+        </select>
+    </div>
 
     <div class="brands-container">
         <div class="brand"><img src="honda-logo.jpeg" alt="Honda"><p>Honda</p></div>
@@ -97,13 +124,13 @@
         <div class="brand"><img src="suzuki-logo.jpeg" alt="Suzuki"><p>Suzuki</p></div>
         <div class="brand"><img src="bajaj-logo.jpeg" alt="Bajaj"><p>Bajaj</p></div>
         <div class="brand"><img src="tvs-logo.jpeg" alt="TVS"><p>TVS</p></div>
-        <div class="brand"><img src="Haojue-logo.jpeg" alt="TVS"><p>TVS</p></div>
-        <div class="brand"><img src="Vento-logo.jpeg" alt="TVS"><p>TVS</p></div>
-        <div class="brand"><img src="Formula-logo.jpeg" alt="TVS"><p>TVS</p></div>
-        <div class="brand"><img src="Freedom-logo.jpeg" alt="TVS"><p>TVS</p></div>
-        <div class="brand"><img src="Serpento-logo.jpeg" alt="TVS"><p>TVS</p></div>
-        <div class="brand"><img src="Benelli-logo.jpeg" alt="TVS"><p>TVS</p></div>
-          <div class="brand"><img src="Katana-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="haojue-logo.jpeg" alt="Haojue"><p>Haojue</p></div>
+        <div class="brand"><img src="vento-logo.jpeg" alt="Vento"><p>Vento</p></div>
+        <div class="brand"><img src="formula-logo.jpeg" alt="Formula"><p>Formula</p></div>
+        <div class="brand"><img src="freedom-logo.jpeg" alt="Freedom"><p>Freedom</p></div>
+        <div class="brand"><img src="serpento-logo.jpeg" alt="Serpento"><p>Serpento</p></div>
+        <div class="brand"><img src="benelli-logo.jpeg" alt="Benelli"><p>Benelli</p></div>
+        <div class="brand"><img src="katana-logo.jpeg" alt="Katana"><p>Katana</p></div>
     </div>
 
     <div class="contact">
