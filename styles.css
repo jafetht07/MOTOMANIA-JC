@@ -17,16 +17,17 @@
             background-position: center;
         }
 
+        
         /* Ajuste del fondo en dispositivos móviles */
         @media (max-width: 768px) {
             body {
-                background-image: none; /* Elimina la imagen de fondo en móviles */
-                background-color: #48c20170; /* Fondo naranja vivo en móviles */
+                background-image: url('FNG.jpg'); /* Elimina la imagen de fondo en móviles */
+                background-color: #bfcab970; /* Fondo naranja vivo en móviles */
             }
         }
 
         header {
-            background-color: rgba(92, 16, 33, 0.952);
+            background-color: rgba(16, 164, 233, 0.952);
             color: white;
             text-align: center;
             padding: 20px;
@@ -103,8 +104,8 @@
 
         .moto-item:hover {
             transform: translateY(-5px);
-            background-color: #ff323c;
-            border-color: #ff4757;
+            background-color: #220fc9;
+            border-color: #a8e911;
         }
 
         .moto-item h3 {
@@ -113,7 +114,7 @@
         }
 
         button {
-            background-color: #ff4757;
+            background-color: #17dde4;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -129,12 +130,12 @@
                 box-shadow: 0 0 0 transparent;
             }
             50% {
-                box-shadow: 0 0 10px rgba(255, 71, 87, 0.7);
+                box-shadow: 0 0 10px rgba(187, 169, 7, 0.7);
             }
         }
 
         button:hover {
-            background-color: #e84118;
+            background-color: #23c70e;
             transform: scale(1.05);
         }
 
