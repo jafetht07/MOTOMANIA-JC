@@ -4,65 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>MotoMania JC</title>
+    <title>Moto Mania JC</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
-            background-image: url('FTP.jpeg'); /* Reemplaza con la ruta de tu imagen de fondo */
-            background-size: contain; /* Asegura que la imagen de fondo se ajuste completamente sin recortarse */
-            background-position: center; /* Centra la imagen de fondo */
-            background-repeat: no-repeat; /* Evita la repetición de la imagen */
-            height: 100vh; /* Asegura que el fondo ocupe toda la altura de la ventana */
-           color: rgba(232, 231, 236, 0.452); /* Cambia el color del texto para que sea legible sobre el fondo */
+            background-image: url('FNG.jpg'); /* Imagen de fondo */
+            background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* No repetir la imagen */
+            background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
+            min-height: 100vh; /* Mínimo 100% de la altura de la pantalla */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(232, 231, 236, 0.8);
         }
-        .menu {
-            margin-top: 20px;
+        .content {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            margin-bottom: 10px;
         }
         .menu select {
             padding: 10px;
             font-size: 16px;
         }
-        .saludo {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
         .moto-section {
-            display: none; /* Ocultar secciones de motos inicialmente */
-            background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para las secciones */
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
-            border-radius: 10px; /* Bordes redondeados */
-            margin: 20px;
-        }
-        h2 {
-            margin-top: 0; /* Evitar márgenes innecesarios en los encabezados */
-        }
-        .moto-item {
-            margin: 15px 0; /* Espacio entre los elementos de la moto */
-        }
-        .moto-image {
-            width: 110%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
-            height: auto; /* Mantiene la proporción de la imagen */
-            border-radius: 10px; /* Esquinas redondeadas para las imágenes */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra alrededor de las imágenes */
+            border-radius: 10px;
+            margin-top: 20px;
         }
         button {
-            background-color: #64d11b; /* Rojo vibrante */
+            background-color: #64d11b;
             color: rgb(90, 33, 33);
             border: none;
             padding: 10px 20px;
             cursor: pointer;
-            border-radius: 5px; /* Bordes redondeados */
-            transition: background-color 0.3s; /* Efecto de transición al cambiar de color */
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #e84118; /* Rojo oscuro al pasar el mouse */
+            background-color: #e84118;
         }
         footer {
-            margin-top: 20px; /* Espacio arriba del pie de página */
-            padding: 10px; /* Espacio dentro del pie de página */
-            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro para el pie */
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            text-align: center;
         }
     </style>
 </head>
