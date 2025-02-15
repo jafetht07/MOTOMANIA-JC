@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             background: linear-gradient(to right, #ff7e5f, #feb47b);
-            background-image: url('FTP.JPEG'); /* Imagen de fondo */
+            background-image: url('FTP.jpeg'); /* Imagen de fondo */
             background-size: cover;
             background-position: center;
         }
