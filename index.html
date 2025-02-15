@@ -69,13 +69,14 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Bienvenido a la Página de MotoMania JC</h1>
-        <div class="saludo">
-            ¡Descubre nuestro increíble mundo de motocicletas!
-        </div>
-        <div class="menu">
-            <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
+   <header>
+    <h1>Bienvenido a la Página de Motos JC</h1>
+    <div class="saludo">
+        ¡Descubre nuestro increíble mundo de motocicletas!
+    </div>
+    <div class="menu">
+        <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
+        <div class="menu-options">
             <select id="marca" onchange="showModels()">
                 <option value="">--Seleccionar--</option>
                 <option value="honda">Honda</option>
@@ -92,12 +93,31 @@
                 <option value="Cuadraciclos">Cuadraciclos</option>
                 <option value="Katana">Katana</option>
                 <option value="BICIMOTOS">BICIMOTOS</option>
-
-
             </select>
         </div>
-    </header>
+    </div>
+</header>
 
+<style>
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .menu-options {
+        display: flex;
+        flex-direction: column; /* Asegura que los elementos estén en columna */
+        align-items: center;
+        gap: 10px;
+    }
+
+    select {
+        padding: 10px;
+        font-size: 16px;
+    }
+</style>
 
 
     <main>
