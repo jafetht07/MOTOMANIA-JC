@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mundo Motor: La mejor tienda de motos con las últimas novedades y modelos.">
-    <title>Página de Mundo Motor</title>
+    <meta name="description" content="Moto Mania JC: La mejor tienda de motos con las últimas novedades y modelos.">
+    <title>Página de Moto Mania JC</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <style>
         body {
@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             background: linear-gradient(to right, #ff7e5f, #feb47b);
-            background-image: url('FNG.jpg'); /* Imagen de fondo */
+            background-image: url('FTP.jpg'); /* Imagen de fondo */
             background-size: cover;
             background-position: center;
         }
@@ -187,7 +187,7 @@
 <body>
 
 <header>
-    <h1>Mundo Motor</h1>
+    <h1>Moto Mania JC</h1>
     <nav>
         <ul>
             <li><a href="#">Inicio</a></li>
@@ -213,7 +213,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2024 Mundo Motor. Todos los derechos reservados.</p>
+    <p>&copy; 2025 Moto Mania JC. Todos los derechos reservados.</p>
 </footer>
 
 </body>
