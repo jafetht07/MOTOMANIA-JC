@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Moto Mania JC</title>
     <style>
         * {
@@ -15,11 +14,11 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background-image: url('FTT.jpeg'); /* Imagen de fondo */
-            background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
-            background-position: center; /* Centra la imagen */
-            background-repeat: no-repeat; /* No repetir la imagen */
-            background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
-            min-height: 100vh; /* Mínimo 100% de la altura de la pantalla */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,91 +32,91 @@
             padding: 20px;
             border-radius: 10px;
         }
-        h1 {
-            margin-bottom: 10px;
-        }
-        .menu select {
-            padding: 10px;
-            font-size: 16px;
-        }
-        .moto-section {
-            display: none;
-            background-color: rgba(0, 0, 0, 0.7);
+        .header {
+            background-color: #222;
+            color: white;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        button {
-            background-color: #64d11b;
-            color: rgb(90, 33, 33);
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #e84118;
-        }
-        footer {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.8);
             width: 100%;
+        }
+        .brands-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .brand {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 120px;
+        }
+        .brand img {
+            width: 80px;
+            height: auto;
+        }
+        .contact {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .contact a {
+            display: block;
+            margin: 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+        }
+        @media (max-width: 768px) {
+            .brands-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .brand {
+                width: 90%;
+            }
+            .contact a {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-   <header>
-    <h1>Bienvenido a la Página de MotoMania JC</h1>
-    <div class="saludo">
-        ¡Descubre nuestro increíble mundo de motocicletas!
+    <header class="header">
+        <h1>Bienvenido a la Página de MotoMania JC</h1>
+        <p>¡Descubre nuestro increíble mundo de motocicletas!</p>
+    </header>
+
+    <div class="brands-container">
+        <div class="brand"><img src="honda-logo.jpeg" alt="Honda"><p>Honda</p></div>
+        <div class="brand"><img src="yamaha-logo.jpeg" alt="Yamaha"><p>Yamaha</p></div>
+        <div class="brand"><img src="suzuki-logo.jpeg" alt="Suzuki"><p>Suzuki</p></div>
+        <div class="brand"><img src="bajaj-logo.jpeg" alt="Bajaj"><p>Bajaj</p></div>
+        <div class="brand"><img src="tvs-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Haojue-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Vento-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Formula-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Freedom-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Serpento-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Benelli-logo.jpeg" alt="TVS"><p>TVS</p></div>
+          <div class="brand"><img src="Katana-logo.jpeg" alt="TVS"><p>TVS</p></div>
     </div>
-    <div class="menu">
-        <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
-        <div class="menu-options">
-            <select id="marca" onchange="showModels()">
-                <option value="">--Seleccionar--</option>
-                <option value="honda">Honda</option>
-                <option value="yamaha">Yamaha</option>
-                <option value="suzuki">Suzuki</option>
-                <option value="Formula">Formula</option>
-                <option value="Freedom">Freedom</option>
-                <option value="Serpento">Serpento</option>
-                <option value="Haojue">Haojue</option>
-                <option value="Bajaj">Bajaj</option>
-                <option value="Vento">Vento</option>
-                <option value="TVS">TVS</option>
-                <option value="Benelli">Benelli</option>
-                <option value="Cuadraciclos">Cuadraciclos</option>
-                <option value="Katana">Katana</option>
-                <option value="BICIMOTOS">BICIMOTOS</option>
-            </select>
-        </div>
+
+    <div class="contact">
+        <h2>Contáctanos</h2>
+        <a href="https://www.facebook.com/MotomaniaJC" target="_blank">Facebook: Motomania JC</a>
+        <a href="tel:+50670117033">Llamar: +506 7011 7033</a>
+        <a href="tel:+50689354332">Llamar: +506 8935 4332</a>
+        <a href="https://wa.me/50670117033">WhatsApp: +506 7011 7033</a>
+        <a href="https://wa.me/50689354332">WhatsApp: +506 8935 4332</a>
     </div>
-</header>
+</body>
+</html>
 
-<style>
-    .menu {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .menu-options {
-        display: flex;
-        flex-direction: column; /* Asegura que los elementos estén en columna */
-        align-items: center;
-        gap: 10px;
-    }
-
-    select {
-        padding: 10px;
-        font-size: 16px;
-    }
-</style>
 
 
     <main>
