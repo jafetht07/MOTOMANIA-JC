@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Moto Mania JC</title>
     <style>
         * {
@@ -10,728 +11,204 @@
             padding: 0;
             box-sizing: border-box;
         }
-
-        :root {
-            --primary-orange: #f57c00;
-            --primary-dark: #e65100;
-            --background-dark: rgba(0, 0, 0, 0.85);
-            --card-dark: rgba(17, 17, 17, 0.95);
-            --text-light: #e8e7ec;
-            --text-accent: #ffa726;
-            --border-radius: 16px;
-            --shadow-light: 0 4px 20px rgba(255, 167, 38, 0.15);
-            --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --gradient-primary: linear-gradient(135deg, #f57c00, #ff9800);
-            --gradient-card: linear-gradient(145deg, rgba(17, 17, 17, 0.95), rgba(34, 34, 34, 0.9));
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            color: var(--text-light);
-            line-height: 1.6;
-            position: relative;
-            font-size: 16px; /* Base font size for mobile */
-        }
-
-        /* Fondo fijo que siempre se mantiene visible */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            font-family: Arial, sans-serif;
+            text-align: center;
             background-image: url('FTT.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            z-index: -2;
-        }
-
-        /* Overlay para mejorar legibilidad */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px; /* Reducido para móvil */
-        }
-
-        /* Header optimizado para móvil */
-        .header {
-            text-align: center;
-            padding: 25px 15px;
-            background: var(--gradient-card);
-            margin: 15px auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-strong);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .header h1 {
-            font-size: clamp(1.8rem, 8vw, 3.5rem);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.2;
-        }
-
-        .header p {
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            color: var(--text-accent);
-            font-weight: 300;
-        }
-
-        /* Menú optimizado para móvil */
-        .menu {
-            text-align: center;
-            margin: 20px auto;
-            padding: 20px;
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-strong);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .menu label {
-            display: block;
-            font-size: clamp(1rem, 4vw, 1.1rem);
-            margin-bottom: 15px;
-            color: var(--text-accent);
-            font-weight: 500;
-        }
-
-        .menu select {
-            padding: 12px 15px;
-            font-size: clamp(14px, 4vw, 16px);
-            width: 100%;
-            max-width: 100%;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            background: var(--gradient-card);
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            outline: none;
-            box-shadow: var(--shadow-light);
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffa726' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-            padding-right: 40px;
-        }
-
-        .menu select:hover {
-            border-color: var(--primary-orange);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-strong);
-        }
-
-        .menu select:focus {
-            border-color: var(--text-accent);
-            box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2);
-        }
-
-        .menu select option {
-            background: #1a1a1a;
-            color: var(--text-light);
-            padding: 10px;
-        }
-
-        /* Grid de marcas optimizado para móvil */
-        .brands-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
-            gap: 12px;
-            padding: 20px 15px;
-            margin: 20px auto;
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-strong);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .brand {
-            background: var(--gradient-card);
-            padding: 12px 8px;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            min-height: 110px;
+            color: rgba(232, 231, 236, 0.8);
         }
-
-        .brand::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 167, 38, 0.1), transparent);
-            transition: left 0.5s ease;
+        .content {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
-
-        .brand:hover::before {
-            left: 100%;
+        h1 {
+            margin-bottom: 10px;
         }
-
+        .menu select {
+            padding: 15px;
+            font-size: 18px;
+            width: 300px;
+        }
+        .brand {
+         background: #111;
+         padding: 10px;
+         border-radius: 12px;
+         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+         text-align: center;
+         width: 120px;
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+         }
         .brand:hover {
-            transform: scale(1.05);
-            border-color: var(--primary-orange);
-            box-shadow: 0 6px 15px rgba(255,255,255,0.2);
+        transform: scale(1.1);
+        box-shadow: 0 6px 15px rgba(255,255,255,0.2);
         }
-
+        .brands-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+        }
+        .brand {
+            background: black;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100px;
+            cursor: pointer;
+        }
         .brand img {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            margin-bottom: 8px;
-            filter: brightness(0.9);
-            transition: filter 0.3s ease;
         }
-
-        .brand:hover img {
-            filter: brightness(1.1);
+        .contact {
+            width: 90%;
+            max-width: 400px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f57c00;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
-
-        .brand p {
-            font-weight: 600;
-            color: var(--text-accent);
-            font-size: clamp(0.8rem, 3vw, 0.9rem);
-            line-height: 1.2;
+        .contact a {
+            display: block;
+            margin: 10px;
+            text-decoration: none;
+            color: #e8e7ec;
+            font-size: 16px;
         }
-
-        /* Sección de motos optimizada para móvil */
         .moto-section {
             display: none;
             margin: 20px auto;
-            background: var(--gradient-card);
-            padding: 20px 15px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-strong);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: slideIn 0.5s ease-out;
-            width: 100%;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
         }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .moto-section h2 {
-            color: var(--text-accent);
-            font-size: clamp(1.4rem, 5vw, 1.8rem);
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-
         .moto-models {
             display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding: 15px 5px;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-orange) transparent;
-        }
-
-        .moto-models::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .moto-models::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-        }
-
-        .moto-models::-webkit-scrollbar-thumb {
-            background: var(--gradient-primary);
-            border-radius: 3px;
-        }
-
-        .moto-card {
-            flex: 0 0 auto;
-            scroll-snap-align: center;
-            cursor: pointer;
-            background: var(--gradient-card);
-            padding: 10px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 130px;
-        }
-
-        .moto-card:hover {
-            transform: scale(1.03);
-            box-shadow: var(--shadow-light);
-        }
-
-        .moto-card img {
-            width: 110px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        .moto-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .moto-card p {
-            font-size: clamp(0.8rem, 3vw, 0.9rem);
-            color: var(--text-accent);
-            margin-top: 8px;
-            text-align: center;
-        }
-
-        /* Botón optimizado para móvil */
-        .btn-close {
-            background: var(--gradient-primary);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            font-size: clamp(0.9rem, 4vw, 1rem);
-            box-shadow: var(--shadow-light);
-            width: 100%;
-            max-width: 200px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn-close:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-strong);
-            background: linear-gradient(135deg, #e65100, #f57c00);
-        }
-
-        /* Sección de contacto optimizada para móvil */
-        .contact {
-            margin: 20px auto;
-            padding: 20px;
-            background: var(--gradient-primary);
-            border-radius: var(--border-radius);
-            text-align: center;
-            box-shadow: var(--shadow-strong);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 95%;
-        }
-
-        .contact h2 {
-            margin-bottom: 20px;
-            font-size: clamp(1.4rem, 5vw, 1.8rem);
-            color: white;
-            font-weight: 700;
-        }
-
-        .contact a {
-            display: block;
-            margin: 8px 0;
-            padding: 12px 15px;
-            text-decoration: none;
-            color: white;
-            font-size: clamp(0.9rem, 4vw, 1rem);
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .contact a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Modal optimizado para móvil */
-        #imageModal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
+            flex-wrap: wrap;
+            gap: 15px;
             justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            padding: 20px;
+            margin-top: 20px;
         }
-
-        #modalImage {
-            max-width: 95%;
-            max-height: 85%;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-strong);
-            animation: zoomIn 0.3s ease-out;
-        }
-
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Footer optimizado para móvil */
-        footer {
+        .moto-card {
+            background: #222;
+            padding: 10px;
+            border-radius: 10px;
+            width: 150px;
             text-align: center;
-            padding: 20px 15px;
-            margin-top: 30px;
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-accent);
-            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            color: white;
         }
-
-        /* Responsive específico para móviles */
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 10px;
-            }
-
-            .header {
-                margin: 10px auto;
-                padding: 20px 12px;
-            }
-
-            .brands-container {
-                grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-                gap: 8px;
-                padding: 15px 10px;
-            }
-
-            .brand {
-                padding: 8px 4px;
-                min-height: 95px;
-            }
-
-            .brand img {
-                width: 50px;
-                height: 50px;
-            }
-
-            .menu, .moto-section, .contact {
-                margin: 15px auto;
-                padding: 15px 12px;
-            }
-
-            .moto-models {
-                gap: 8px;
-                padding: 12px 3px;
-            }
-
-            .moto-card {
-                min-width: 110px;
-                padding: 8px;
-            }
-
-            .moto-card img {
-                width: 94px;
-                height: 70px;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .brands-container {
-                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-                gap: 6px;
-            }
-
-            .brand {
-                min-height: 85px;
-            }
-
-            .brand img {
-                width: 45px;
-                height: 45px;
-            }
-
-            .moto-card {
-                min-width: 100px;
-            }
-
-            .moto-card img {
-                width: 84px;
-                height: 65px;
-            }
-        }
-
-        /* Táctil mejorado para móvil */
-        @media (hover: none) and (pointer: coarse) {
-            .brand:hover,
-            .moto-card:hover,
-            .btn-close:hover,
-            .contact a:hover {
-                transform: none;
-            }
-            
-            .brand:active {
-                transform: scale(0.98);
-            }
-            
-            .moto-card:active {
-                transform: scale(0.98);
-            }
-            
-            .btn-close:active {
-                transform: scale(0.98);
-            }
-        }
-
-        /* Efectos adicionales */
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Mejoras de accesibilidad táctil */
-        .brand,
-        .moto-card,
-        .btn-close,
-        .contact a {
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: rgba(255, 167, 38, 0.2);
+        .moto-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header fade-in">
-            <h1>Bienvenido a MotoMania JC</h1>
-            <p>¡Descubre nuestro increíble mundo de motocicletas!</p>
-        </header>
+    <header class="header">
+        <h1>Bienvenido a MotoMania JC</h1>
+        <p>¡Descubre nuestro increíble mundo de motocicletas!</p>
+    </header>
 
-        <div class="menu fade-in">
-            <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
-            <div class="menu-options">
-                <select id="marca" onchange="showModels()">
-                    <option value="">--Seleccionar--</option>
-                    <option value="honda">Honda</option>
-                    <option value="KTM">KTM</option>
-                    <option value="yamaha">Yamaha</option>
-                    <option value="suzuki">Suzuki</option>
-                    <option value="Formula">Formula</option>
-                    <option value="Freedom">Freedom</option>
-                    <option value="Serpento">Serpento</option>
-                    <option value="Haojue">Haojue</option>
-                    <option value="Bajaj">Bajaj</option>
-                    <option value="Vento">Vento</option>
-                    <option value="TVS">TVS</option>
-                    <option value="Benelli">Benelli</option>
-                    <option value="Cuadraciclos">Cuadraciclos</option>
-                    <option value="Katana">Katana</option>
-                    <option value="BICIMOTOS">BICIMOTOS</option>
-                </select>
-            </div>
+    <div class="menu">
+        <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
+        <div class="menu-options">
+             <select id="marca" onchange="showModels()">
+                <option value="">--Seleccionar--</option>
+                <option value="honda">Honda</option>
+                <option value="KTM">KTM</option>
+                <option value="yamaha">Yamaha</option>
+                <option value="suzuki">Suzuki</option>
+                <option value="Formula">Formula</option>
+                <option value="Freedom">Freedom</option>
+                <option value="Serpento">Serpento</option>
+                <option value="Haojue">Haojue</option>
+                <option value="Bajaj">Bajaj</option>
+                <option value="Vento">Vento</option>
+                <option value="TVS">TVS</option>
+                <option value="Benelli">Benelli</option>
+                <option value="Cuadraciclos">Cuadraciclos</option>
+                <option value="Katana">Katana</option>
+                <option value="BICIMOTOS">BICIMOTOS</option>
+            </select>
         </div>
-
-        <div class="brands-container fade-in">
-            <div class="brand"><img src="honda-logo.jpeg" alt="Honda"><p>Honda</p></div>
-            <div class="brand"><img src="yamaha-logo.jpeg" alt="Yamaha"><p>Yamaha</p></div>
-            <div class="brand"><img src="suzuki-logo.jpeg" alt="Suzuki"><p>Suzuki</p></div>
-            <div class="brand"><img src="bajaj-logo.jpeg" alt="Bajaj"><p>Bajaj</p></div>
-            <div class="brand"><img src="tvs-logo.jpeg" alt="TVS"><p>TVS</p></div>
-            <div class="brand"><img src="Haojue-logo.jpeg" alt="Haojue"><p>Haojue</p></div>
-            <div class="brand"><img src="Vento-logo.jpeg" alt="Vento"><p>Vento</p></div>
-            <div class="brand"><img src="Formula-logo.jpeg" alt="Formula"><p>Formula</p></div>
-            <div class="brand"><img src="Freedom-logo.jpeg" alt="Freedom"><p>Freedom</p></div>
-            <div class="brand"><img src="Serpento-logo.jpeg" alt="Serpento"><p>Serpento</p></div>
-            <div class="brand"><img src="Benelli-logo.jpeg" alt="Benelli"><p>Benelli</p></div>
-            <div class="brand"><img src="Katana-logo.jpeg" alt="Katana"><p>Katana</p></div>
-            <div class="brand"><img src="KTM-logo.jpeg" alt="KTM"><p>KTM</p></div>
-        </div>
-
-        <div class="moto-section" id="moto-section">
-            <h2 id="marca-titulo"></h2>
-            <div class="moto-models" id="moto-models"></div>
-            <button class="btn-close" onclick="hideMotoSection()">Cerrar</button>
-        </div>
-
-        <div class="contact fade-in">
-            <h2>Contáctanos</h2>
-            <a href="https://www.facebook.com/share/1BaqvMcgHV/" target="_blank">📘 Facebook: Motomania JC</a>
-            <a href="tel:+50670117033">📞 Llamar: +506 7011 7033</a>
-            <a href="tel:+50689354332">📞 Llamar: +506 8935 4332</a>
-            <a href="https://wa.me/50670117033">💬 WhatsApp: +506 7011 7033</a>
-            <a href="https://wa.me/50689354332">💬 WhatsApp: +506 8935 4332</a>
-        </div>
-
-        <footer class="fade-in">
-            <p>&copy; 2025 Moto Mania JC. Todos los derechos reservados.</p>
-        </footer>
     </div>
 
-    <!-- Modal para imagen ampliada -->
-    <div id="imageModal">
-        <img id="modalImage" src="" alt="Imagen ampliada">
+   <div class="brands-container">
+        <div class="brand"><img src="honda-logo.jpeg" alt="Honda"><p>Honda</p></div>
+        <div class="brand"><img src="yamaha-logo.jpeg" alt="Yamaha"><p>Yamaha</p></div>
+        <div class="brand"><img src="suzuki-logo.jpeg" alt="Suzuki"><p>Suzuki</p></div>
+        <div class="brand"><img src="bajaj-logo.jpeg" alt="Bajaj"><p>Bajaj</p></div>
+        <div class="brand"><img src="tvs-logo.jpeg" alt="TVS"><p>TVS</p></div>
+        <div class="brand"><img src="Haojue-logo.jpeg" alt="Haojue"><p>Haojue</p></div>
+        <div class="brand"><img src="Vento-logo.jpeg" alt="Vento"><p>Vento</p></div>
+        <div class="brand"><img src="Formula-logo.jpeg" alt="Formula"><p>Formula</p></div>
+        <div class="brand"><img src="Freedom-logo.jpeg" alt="Freedom"><p>Freedom</p></div>
+        <div class="brand"><img src="Serpento-logo.jpeg" alt="Serpento"><p>Serpento</p></div>
+        <div class="brand"><img src="Benelli-logo.jpeg" alt="Benelli"><p>Benelli</p></div>
+        <div class="brand"><img src="Katana-logo.jpeg" alt="Katana"><p>Katana</p></div>
+        <div class="brand"><img src="KTM-logo.jpeg" alt="KTM"><p>KTM</p></div>
     </div>
 
-    <script>
-        function enlargeImage(src) {
-            const modal = document.getElementById("imageModal");
-            const img = document.getElementById("modalImage");
-            img.src = src;
-            modal.style.display = "flex";
-        }
 
-        // Cerrar modal al hacer clic
-        document.getElementById("imageModal").addEventListener("click", function () {
-            this.style.display = "none";
-        });
+    <div class="moto-section" id="moto-section">
+        <h2 id="marca-titulo"></h2>
+        <div class="moto-models" id="moto-models"></div>
+        <button onclick="hideMotoSection()">Cerrar</button>
+    </div>
 
+    <div class="contact">
+        <h2>Contáctanos</h2>
+        <a href="https://www.facebook.com/share/1BaqvMcgHV/" target="_blank">Facebook: Motomania JC</a>
+        <a href="tel:+50670117033">Llamar: +506 7011 7033</a>
+        <a href="tel:+50689354332">Llamar: +506 8935 4332</a>
+        <a href="https://wa.me/50670117033">WhatsApp: +506 7011 7033</a>
+        <a href="https://wa.me/50689354332">WhatsApp: +506 8935 4332</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Moto Mania JC. Todos los derechos reservados.</p>
+    </footer>
+
+     <script>
         function showModels() {
-            const marca = document.getElementById('marca').value;
-            const modelsContainer = document.getElementById('moto-models');
             const motoSection = document.getElementById('moto-section');
-            const titulo = document.getElementById('marca-titulo');
-
+            const motoInfo = document.getElementById('moto-info');
+            const marca = document.getElementById('marca').value;
+            
             if (marca) {
-                titulo.textContent = "Modelos de " + marca;
-                motoSection.style.display = "block";
-
-                // Ejemplo estático: deberías reemplazar por imágenes reales según marca
-                modelsContainer.innerHTML = `
-                    <div class="moto-card">
-                        <img src="modelo1.jpg" alt="Modelo 1" onclick="enlargeImage(this.src)">
-                        <p>${marca} Modelo 1</p>
-                    </div>
-                    <div class="moto-card">
-                        <img src="modelo2.jpg" alt="Modelo 2" onclick="enlargeImage(this.src)">
-                        <p>${marca} Modelo 2</p>
-                    </div>
-                    <div class="moto-card">
-                        <img src="modelo1.jpg" alt="Modelo 3" onclick="enlargeImage(this.src)">
-                        <p>${marca} Modelo 3</p>
-                    </div>
-                `;
+                motoSection.style.display = 'block';
+                motoInfo.textContent = `Has seleccionado la marca: ${marca}`;
             } else {
-                motoSection.style.display = "none";
+                motoSection.style.display = 'none';
             }
         }
 
         function hideMotoSection() {
             document.getElementById('moto-section').style.display = 'none';
         }
-
-        // Animaciones al cargar la página
-        window.addEventListener('load', function() {
-            const elements = document.querySelectorAll('.fade-in');
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.style.opacity = '1';
-                }, index * 200);
-            });
-        });
-
-        // Efecto de hover en las marcas y redirección directa
-        document.querySelectorAll('.brand').forEach(brand => {
-            brand.addEventListener('click', function() {
-                const marcaName = this.querySelector('p').textContent.toLowerCase();
-                const select = document.getElementById('marca');
-                
-                // Mapear nombres de marcas para coincidencia exacta
-                const marcaMap = {
-                    'honda': 'honda',
-                    'yamaha': 'yamaha',
-                    'suzuki': 'suzuki',
-                    'bajaj': 'Bajaj',
-                    'tvs': 'TVS',
-                    'haojue': 'Haojue',
-                    'vento': 'Vento',
-                    'formula': 'Formula',
-                    'freedom': 'Freedom',
-                    'serpento': 'Serpento',
-                    'benelli': 'Benelli',
-                    'katana': 'Katana',
-                    'ktm': 'KTM'
-                };
-                
-                select.value = marcaMap[marcaName] || marcaName;
-                showModels();
-                
-                // Scroll suave hacia la sección de motos
-                setTimeout(() => {
-                    document.getElementById('moto-section').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }, 100);
-            });
-        });
-
-        // Prevenir zoom en doble tap para iOS
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
     </script>
 </body>
 </html>
+
 
     <main>
         <section id="honda" class="moto-section">
