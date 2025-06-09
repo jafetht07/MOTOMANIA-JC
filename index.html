@@ -431,7 +431,6 @@
             color: var(--text-accent);
             font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
-        
     </style>
 </head>
 <body>
@@ -487,96 +486,15 @@
         <button onclick="hideMotoSection()">Cerrar</button>
     </div>
 
-   <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center; /* centra horizontal */
-    align-items: center;     /* centra vertical */
-    background: #121226;
-    margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center; /* centro horizontal */
-  align-items: center;     /* centro vertical */
-  background: #121226;
-  }
-
-  .contact-card {
-    max-width: 320px;
-    background: #1e1e2f;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #eee;
-  }
-
-  .contact-card h2 {
-    text-align: center;
-    margin-bottom: 16px;
-    color: #00d1b2;
-  }
-
-  .contact-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #2a2a40;
-    color: #eee;
-    text-decoration: none;
-    padding: 10px 16px;
-    margin: 8px 0;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .contact-btn:hover {
-    background: #00d1b2;
-    color: #1e1e2f;
-  }
-
-  .contact-btn img {
-    width: 24px;
-    filter: invert(92%) sepia(17%) saturate(749%) hue-rotate(157deg) brightness(94%) contrast(90%);
-    transition: filter 0.3s ease;
-  }
-
-  .contact-btn:hover img {
-    filter: invert(22%) sepia(93%) saturate(655%) hue-rotate(131deg) brightness(93%) contrast(91%);
-  }
-</style>
-
-<div class="contact-card">
-  <h2>Contáctanos</h2>
-
-  <a href="https://www.facebook.com/share/1BaqvMcgHV/" target="_blank" class="contact-btn">
-    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook">
-    Facebook: Motomania JC
-  </a>
-
-  <a href="tel:+50670117033" class="contact-btn">
-    <img src="llamada.jpg" alt="Teléfono">
-    Llamar: +506 7011 7033
-  </a>
-
-  <a href="tel:+50689354332" class="contact-btn">
-    <img src="llamada.jpg" alt="Teléfono">
-    Llamar: +506 8935 4332
-  </a>
-
-  <a href="https://wa.me/50670117033" target="_blank" class="contact-btn">
-    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg" alt="WhatsApp">
-    WhatsApp: +506 7011 7033
-  </a>
-
-  <a href="https://wa.me/50689354332" target="_blank" class="contact-btn">
-    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg" alt="WhatsApp">
-    WhatsApp: +506 8935 4332
-  </a>
-</div>
+    <div class="contact">
+        <h2>Contáctanos</h2>
+        <a href="https://www.facebook.com/share/1BaqvMcgHV/" target="_blank">Facebook: Motomania JC</a>
+        <a href="tel:+50670117033">Llamar: +506 7011 7033</a>
+        <a href="tel:+50689354332">Llamar: +506 8935 4332</a>
+        <a href="https://wa.me/50670117033">WhatsApp: +506 7011 7033</a>
+        <a href="https://wa.me/50689354332">WhatsApp: +506 8935 4332</a>
+        
+    </div>
 
     <footer>
         <p>&copy; 2025 Moto Mania JC. Todos los derechos reservados.</p>
