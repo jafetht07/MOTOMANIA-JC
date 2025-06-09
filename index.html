@@ -5,62 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Moto Mania JC</title>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        :root {
+            --primary-orange: #f57c00;
+            --primary-dark: #e65100;
+            --background-dark: rgba(0, 0, 0, 0.85);
+            --card-dark: rgba(17, 17, 17, 0.95);
+            --text-light: #e8e7ec;
+            --text-accent: #ffa726;
+            --border-radius: 16px;
+            --shadow-light: 0 4px 20px rgba(255, 167, 38, 0.15);
+            --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --gradient-primary: linear-gradient(135deg, #f57c00, #ff9800);
+            --gradient-card: linear-gradient(145deg, rgba(17, 17, 17, 0.95), rgba(34, 34, 34, 0.9));
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            font-size: 16px;
+        }
+
+        /* Fondo fijo que siempre se mantiene visible */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: url('FTT.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: rgba(232, 231, 236, 0.8);
+            z-index: -2;
         }
-        .content {
-            width: 90%;
-            max-width: 600px;
-            background-color: rgba(0, 0, 0, 0.7);
+
+        /* Overlay para mejorar legibilidad */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header optimizado para móvil */
+        .header {
+            text-align: center;
+            padding: 25px 15px;
+            background: var(--gradient-card);
+            margin: 15px auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 8vw, 3.5rem);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: var(--text-accent);
+            font-weight: 300;
+        }
+
+        /* Menú optimizado para móvil */
+        .menu {
+            text-align: center;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        h1 {
-            margin-bottom: 10px;
+
+        .menu label {
+            display: block;
+            font-size: clamp(1rem, 4vw, 1.1rem);
+            margin-bottom: 15px;
+            color: var(--text-accent);
+            font-weight: 500;
         }
+
         .menu select {
-            padding: 15px;
-            font-size: 18px;
-            width: 300px;
+            padding: 12px 15px;
+            font-size: clamp(14px, 4vw, 16px);
+            width: 100%;
+            max-width: 100%;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: var(--gradient-card);
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: var(--shadow-light);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffa726' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
         }
-        .brand {
-         background: #111;
-         padding: 10px;
-         border-radius: 12px;
-         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-         text-align: center;
-         width: 120px;
-         transition: transform 0.3s ease, box-shadow 0.3s ease;
-         }
-        .brand:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 15px rgba(255,255,255,0.2);
+
+        .menu select:hover {
+            border-color: var(--primary-orange);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-strong);
         }
+
+        .menu select:focus {
+            border-color: var(--text-accent);
+            box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2);
+        }
+
+        .menu select option {
+            background: #1a1a1a;
+            color: var(--text-light);
+            padding: 10px;
+        }
+
+        /* MANTENIENDO EXACTAMENTE LOS MÁRGENES Y TAMAÑOS DEL SEGUNDO CÓDIGO */
         .brands-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
             padding: 20px;
+            margin: 20px auto;
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .brand {
             background: black;
             padding: 10px;
@@ -69,57 +180,258 @@
             text-align: center;
             width: 100px;
             cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 167, 38, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .brand:hover::before {
+            left: 100%;
+        }
+
+        .brand:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(255,255,255,0.2);
+        }
+
+        /* MANTENIENDO EXACTAMENTE EL TAMAÑO DE IMAGEN DEL SEGUNDO CÓDIGO */
         .brand img {
             width: 80px;
             height: 80px;
             object-fit: contain;
+            margin-bottom: 8px;
+            filter: brightness(0.9);
+            transition: filter 0.3s ease;
         }
-        .contact {
-            width: 90%;
-            max-width: 400px;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f57c00;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+
+        .brand:hover img {
+            filter: brightness(1.1);
         }
-        .contact a {
-            display: block;
-            margin: 10px;
-            text-decoration: none;
-            color: #e8e7ec;
-            font-size: 16px;
+
+        .brand p {
+            font-weight: 600;
+            color: var(--text-accent);
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            line-height: 1.2;
         }
+
+        /* Sección de motos optimizada para móvil */
         .moto-section {
             display: none;
             margin: 20px auto;
-            background: rgba(0,0,0,0.8);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 800px;
+            background: var(--gradient-card);
+            padding: 20px 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.5s ease-out;
+            width: 100%;
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .moto-section h2 {
+            color: var(--text-accent);
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
         .moto-models {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 15px 5px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-orange) transparent;
         }
+
+        .moto-models::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .moto-models::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .moto-models::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
         .moto-card {
-            background: #222;
+            flex: 0 0 auto;
+            scroll-snap-align: center;
+            cursor: pointer;
+            background: var(--gradient-card);
             padding: 10px;
-            border-radius: 10px;
-            width: 150px;
-            text-align: center;
-            color: white;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 130px;
         }
+
+        .moto-card:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-light);
+        }
+
         .moto-card img {
-            width: 100%;
-            height: 100px;
+            width: 110px;
+            height: 80px;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
         }
+
+        .moto-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .moto-card p {
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            color: var(--text-accent);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Botón optimizado para móvil */
+        .btn-close {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-size: clamp(0.9rem, 4vw, 1rem);
+            box-shadow: var(--shadow-light);
+            width: 100%;
+            max-width: 200px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-close:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-strong);
+            background: linear-gradient(135deg, #e65100, #f57c00);
+        }
+
+        /* Sección de contacto optimizada para móvil */
+        .contact {
+            margin: 20px auto;
+            padding: 20px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow-strong);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 95%;
+        }
+
+        .contact h2 {
+            margin-bottom: 20px;
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            color: white;
+            font-weight: 700;
+        }
+
+        .contact a {
+            display: block;
+            margin: 8px 0;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: white;
+            font-size: clamp(0.9rem, 4vw, 1rem);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .contact a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal optimizado para móvil */
+        #imageModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+        }
+
+        #modalImage {
+            max-width: 95%;
+            max-height: 85%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            animation: zoomIn 0.3s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Footer optimizado para móvil */
+        footer {
+            text-align: center;
+            padding: 20px 15px;
+            margin-top: 30px;
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-accent);
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+        }
+        
     </style>
 </head>
 <body>
@@ -175,14 +487,96 @@
         <button onclick="hideMotoSection()">Cerrar</button>
     </div>
 
-    <div class="contact">
-        <h2>Contáctanos</h2>
-        <a href="https://www.facebook.com/share/1BaqvMcgHV/" target="_blank">Facebook: Motomania JC</a>
-        <a href="tel:+50670117033">Llamar: +506 7011 7033</a>
-        <a href="tel:+50689354332">Llamar: +506 8935 4332</a>
-        <a href="https://wa.me/50670117033">WhatsApp: +506 7011 7033</a>
-        <a href="https://wa.me/50689354332">WhatsApp: +506 8935 4332</a>
-    </div>
+   <style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* centra horizontal */
+    align-items: center;     /* centra vertical */
+    background: #121226;
+    margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* centro horizontal */
+  align-items: center;     /* centro vertical */
+  background: #121226;
+  }
+
+  .contact-card {
+    max-width: 320px;
+    background: #1e1e2f;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eee;
+  }
+
+  .contact-card h2 {
+    text-align: center;
+    margin-bottom: 16px;
+    color: #00d1b2;
+  }
+
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #2a2a40;
+    color: #eee;
+    text-decoration: none;
+    padding: 10px 16px;
+    margin: 8px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .contact-btn:hover {
+    background: #00d1b2;
+    color: #1e1e2f;
+  }
+
+  .contact-btn img {
+    width: 24px;
+    filter: invert(92%) sepia(17%) saturate(749%) hue-rotate(157deg) brightness(94%) contrast(90%);
+    transition: filter 0.3s ease;
+  }
+
+  .contact-btn:hover img {
+    filter: invert(22%) sepia(93%) saturate(655%) hue-rotate(131deg) brightness(93%) contrast(91%);
+  }
+</style>
+
+<div class="contact-card">
+  <h2>Contáctanos</h2>
+
+  <a href="https://www.facebook.com/share/1BaqvMcgHV/" target="_blank" class="contact-btn">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook">
+    Facebook: Motomania JC
+  </a>
+
+  <a href="tel:+50670117033" class="contact-btn">
+    <img src="llamada.jpg" alt="Teléfono">
+    Llamar: +506 7011 7033
+  </a>
+
+  <a href="tel:+50689354332" class="contact-btn">
+    <img src="llamada.jpg" alt="Teléfono">
+    Llamar: +506 8935 4332
+  </a>
+
+  <a href="https://wa.me/50670117033" target="_blank" class="contact-btn">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg" alt="WhatsApp">
+    WhatsApp: +506 7011 7033
+  </a>
+
+  <a href="https://wa.me/50689354332" target="_blank" class="contact-btn">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg" alt="WhatsApp">
+    WhatsApp: +506 8935 4332
+  </a>
+</div>
 
     <footer>
         <p>&copy; 2025 Moto Mania JC. Todos los derechos reservados.</p>
