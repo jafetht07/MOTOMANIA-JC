@@ -432,12 +432,35 @@
             font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
     </style>
+    
 </head>
 <body>
-    <header class="header">
-        <h1>Bienvenido a MotoMania JC</h1>
-        <p>¡Descubre nuestro increíble mundo de motocicletas!</p>
-    </header>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #111; border-bottom: 3px solid #f57c00;">
+
+    <!-- LOGO -->
+    <h1 style="color: #f57c00; font-size: 28px; font-weight: bold; margin: 0;">
+        MOTOMANÍA JC
+    </h1>
+
+    <!-- BOTÓN ADMIN -->
+    <button onclick="showLogin()" 
+        style="
+            background: #f57c00;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        "
+        onmouseover="this.style.background='#ff9800'"
+        onmouseout="this.style.background='#f57c00'">
+        🔐 Admin
+    </button>
+
+</header>
 
     <div class="menu">
         <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
@@ -1766,8 +1789,6 @@
 
 
 
-
-
      
         
 
@@ -1808,6 +1829,7 @@
 </body>
 
 </html>
+
 
 
 
