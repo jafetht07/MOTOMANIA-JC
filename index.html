@@ -462,6 +462,51 @@
 
 </header>
 
+<!-- == ADMIN & LOGIN (INSERTADO: login funcional + panel admin + PDF con QR) == -->
+<!-- Login modal -->
+<div id="loginModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#111; padding:18px; border-radius:12px; width:95%; max-width:420px; color:#fff; box-shadow:0 8px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.04);">
+    <h3 style="color:#f57c00; text-align:center; margin-bottom:10px;">Acceso Admin</h3>
+    <label style="display:block; margin:6px 0 4px;">Usuario</label>
+    <input id="loginUser" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:#0d0d0d; color:#fff;" autocomplete="username">
+    <label style="display:block; margin:8px 0 4px;">Contraseña</label>
+    <input id="loginPass" type="password" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:#0d0d0d; color:#fff;" autocomplete="current-password">
+    <div style="display:flex; gap:8px; margin-top:12px; justify-content:flex-end;">
+      <button onclick="tryLogin()" style="background:#f57c00; color:#fff; padding:10px 14px; border-radius:8px; border:none; font-weight:700;">Ingresar</button>
+      <button onclick="closeLoginModal()" style="background:transparent; color:#f57c00; padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">Cancelar</button>
+    </div>
+    <p id="loginError" style="color:#ff6666; display:none; margin-top:8px;">Credenciales incorrectas.</p>
+  </div>
+</div>
+
+<!-- Panel Admin (oculto hasta login) -->
+<div id="adminPanel" style="display:none; margin:18px auto; max-width:980px; background:rgba(17,17,17,0.95); padding:16px; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+  <h2 style="color:#f57c00; margin:0 0 10px 0;">Panel Admin</h2>
+  <p style="margin:0 0 12px 0; color:#ddd;">Usuario: <strong id="adminUserLabel"></strong></p>
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <input id="pdfCliente" placeholder="Nombre del cliente" style="flex:1; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);">
+    <input id="pdfTelefono" placeholder="Teléfono" style="flex:1; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);">
+  </div>
+  <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+    <input id="pdfModelo" placeholder="Modelo" style="flex:1; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);">
+    <input id="pdfAnio" placeholder="Año" style="width:160px; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);">
+    <input id="pdfPrecio" placeholder="Precio" style="width:180px; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);">
+  </div>
+  <div style="display:flex; gap:8px; margin-top:8px; align-items:center;">
+    <input id="pdfImgSrc" placeholder="URL ó path imagen (si queda vacío se intentará detectar la imagen seleccionada)" style="flex:1; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);">
+    <button onclick="captureFromSelection()" style="background:#ffa726; color:#000; padding:10px 12px; border-radius:8px; border:none; font-weight:700;">Rellenar desde selección</button>
+  </div>
+  <textarea id="pdfObserv" placeholder="Observaciones / nota legal" style="margin-top:8px; width:100%; min-height:80px; padding:10px; border-radius:8px; background:#0d0d0d; color:#fff; border:1px solid rgba(255,255,255,0.06);"></textarea>
+  <div style="display:flex; gap:8px; margin-top:10px; justify-content:flex-end;">
+    <button onclick="generateVolantePDF()" style="background:#f57c00; color:#fff; padding:10px 14px; border-radius:8px; border:none; font-weight:700;">Generar Volante PDF</button>
+    <button onclick="logoutAdmin()" style="background:transparent; color:#f57c00; padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">Cerrar sesión</button>
+  </div>
+  <div id="adminNotice" style="color:#9f9f9f; margin-top:10px; font-size:0.95rem;"></div>
+</div>
+
+<!-- == FIN ADMIN/LOGIN --> 
+
+
     <div class="menu">
         <label for="marca">Seleccione la marca por la cual deseas consultar:</label>
         <div class="menu-options">
@@ -541,6 +586,276 @@
             document.getElementById('moto-section').style.display = 'none';
         }
     </script>
+
+<!-- Librerías para PDF y QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+// Credenciales (tal cual me pediste)
+const ADMIN_USER = 'jc1874cr';
+const ADMIN_PASS = 'qwrt2107';
+const QR_LINK = 'https://jafetht07.github.io/MOTOMANIA-JC/';
+
+// Login modal controls
+function showLogin(){ 
+    const m = document.getElementById('loginModal'); 
+    if(m){ m.style.display='flex'; document.getElementById('loginUser').focus(); } 
+}
+function closeLoginModal(){ const m=document.getElementById('loginModal'); if(m){ m.style.display='none'; document.getElementById('loginError').style.display='none'; } }
+function tryLogin(){
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const err = document.getElementById('loginError');
+    if(u === ADMIN_USER && p === ADMIN_PASS){
+        // success
+        document.getElementById('loginModal').style.display='none';
+        document.getElementById('adminPanel').style.display='block';
+        document.getElementById('adminUserLabel').textContent = u;
+        document.getElementById('adminNotice').textContent = 'Panel activado. Puedes rellenar los campos y generar el volante.';
+        // generate initial QR preview (small)
+        generateQRPreview();
+    } else {
+        if(err) err.style.display='block';
+    }
+}
+
+function logoutAdmin(){
+    document.getElementById('adminPanel').style.display='none';
+    document.getElementById('loginUser').value='';
+    document.getElementById('loginPass').value='';
+    document.getElementById('adminNotice').textContent='Sesión cerrada.';
+}
+
+// Try to capture data from the currently selected moto on the page (if any)
+// It looks for a .moto-item that contains the modelo text stored in lastClickedModel (set by click handlers)
+let lastClickedModel = null;
+// Enhance existing sendMessage so that if admin logged in, it will prefill fields instead of opening whatsapp
+(function enhanceSendMessage(){
+    const original = window.sendMessage;
+    window.sendMessage = function(moto){
+        // record last clicked model name
+        lastClickedModel = moto;
+        // If admin panel visible, attempt a capture
+        const admin = document.getElementById('adminPanel');
+        if(admin && admin.style.display === 'block'){
+            captureFromSelection();
+            // do not send whatsapp when in admin mode
+            return;
+        }
+        // otherwise call original behavior (open whatsapp) if exists
+        if(typeof original === 'function') return original(moto);
+    }
+})();
+
+function captureFromSelection(){
+    // If user filled an image URL manually, prefer it
+    const manual = document.getElementById('pdfImgSrc').value.trim();
+    if(manual){
+        document.getElementById('adminNotice').textContent = 'Usando imagen/URL proporcionada manualmente.';
+        return autofillByImageSrc(manual);
+    }
+    // try to find a moto-item whose text contains lastClickedModel
+    let found = null;
+    if(lastClickedModel){
+        const items = document.querySelectorAll('.moto-item');
+        for(const it of items){
+            if(it.textContent && it.textContent.includes(lastClickedModel)){
+                found = it;
+                break;
+            }
+        }
+    }
+    if(!found){
+        // fallback: find currently visible moto-section and pick first .moto-item
+        const visibleSection = Array.from(document.querySelectorAll('.moto-section')).find(s=>s.style.display!== 'none');
+        if(visibleSection){
+            found = visibleSection.querySelector('.moto-item');
+        }
+    }
+    if(!found){
+        document.getElementById('adminNotice').textContent = 'No se encontró selección. Introduce manualmente o haz clic en "Cotizar" de una moto mientras estés logueado.';
+        return;
+    }
+    // extract image, modelo, precio, año if possible
+    const img = found.querySelector('img');
+    const modeloText = (found.querySelector('h3')?.textContent || found.querySelector('p')?.textContent || '').trim();
+    const priceNode = Array.from(found.querySelectorAll('p')).find(p=>/Precio|₡/.test(p.textContent)) || null;
+    const yearNode = Array.from(found.querySelectorAll('p')).find(p=>/Año|202\d|202\d/.test(p.textContent)) || null;
+    if(modeloText) document.getElementById('pdfModelo').value = modeloText.replace(/^Modelo:?\s*/i,'');
+    if(priceNode) document.getElementById('pdfPrecio').value = priceNode.textContent.replace(/^Precio:?\s*/i,'');
+    if(yearNode) document.getElementById('pdfAnio').value = yearNode.textContent.replace(/^Año:?\s*/i,'');
+    if(img) document.getElementById('pdfImgSrc').value = img.getAttribute('src');
+    document.getElementById('adminNotice').textContent = 'Campos rellenados desde la moto seleccionada.';
+}
+
+function autofillByImageSrc(src){
+    // attempt to fill the image src only
+    document.getElementById('pdfImgSrc').value = src;
+    document.getElementById('adminNotice').textContent = 'Imagen establecida desde URL.';
+}
+
+// Generate a small QR preview inside the adminNotice (not visible image element) 
+function generateQRPreview(){
+    // create temporary QR and attach as dataURL to adminNotice (as img)
+    const tmp = document.createElement('div');
+    new QRCode(tmp, { text: QR_LINK, width: 100, height: 100, correctLevel: QRCode.CorrectLevel.H });
+    setTimeout(()=>{
+        const img = tmp.querySelector('img') || tmp.querySelector('canvas');
+        if(img){
+            const data = (img.tagName.toLowerCase() === 'img') ? img.src : img.toDataURL('image/png');
+            // show small preview
+            const notice = document.getElementById('adminNotice');
+            if(notice){
+                notice.innerHTML = 'QR: <img src="'+data+'" style="width:64px;height:64px;border-radius:8px;vertical-align:middle;margin-left:8px;">';
+            }
+        }
+        tmp.remove();
+    },120);
+}
+
+// Utility: load image by path/url and return a dataURL via canvas
+function loadImageAsDataURL(src, maxW=800, maxH=600){
+    return new Promise((resolve, reject)=>{
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function(){
+            // scale
+            let w = img.width, h = img.height;
+            const ratio = Math.min(maxW/w, maxH/h, 1);
+            w = w*ratio; h = h*ratio;
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img,0,0,w,h);
+            try{
+                const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+                resolve(dataURL);
+            }catch(e){
+                reject(e);
+            }
+        };
+        img.onerror = function(e){
+            reject(new Error('No se pudo cargar la imagen: '+src));
+        };
+        img.src = src;
+        // if cache blocks crossOrigin, try to reload with a timestamp
+        setTimeout(()=>{ if(!img.complete){ img.src = src + (src.includes('?')? '&':'?') + 'cachebust=' + Date.now(); } }, 300);
+    });
+}
+
+// Generate the PDF volante (jsPDF)
+async function generateVolantePDF(){
+    const cliente = document.getElementById('pdfCliente').value || '---';
+    const telefono = document.getElementById('pdfTelefono').value || '---';
+    const modelo = document.getElementById('pdfModelo').value || '---';
+    const anio = document.getElementById('pdfAnio').value || '---';
+    const precio = document.getElementById('pdfPrecio').value || '---';
+    const obs = document.getElementById('pdfObserv').value || '';
+    const imgSrc = document.getElementById('pdfImgSrc').value.trim();
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({unit:'pt', format:'a4'});
+
+    // Header
+    doc.setFillColor(245,124,0);
+    doc.rect(0,0,595,60,'F');
+    doc.setFontSize(22);
+    doc.setTextColor(255,255,255);
+    doc.text('MOTOMANÍA JC', 40, 40);
+    doc.setFontSize(10);
+    doc.text('Tel: +506 7011 7033  •  WhatsApp: +506 7011 7033', 40, 56);
+
+    // Title
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(16);
+    doc.text('COTIZACIÓN / VOLANTE', 40, 100);
+
+    // Client info box
+    doc.setFontSize(11);
+    doc.text(`Cliente: ${cliente}`, 40, 130);
+    doc.text(`Teléfono: ${telefono}`, 40, 148);
+    doc.text(`Fecha: ${new Date().toLocaleDateString('es-CR')}`, 400, 130);
+
+    // Moto info box
+    doc.setDrawColor(200);
+    doc.setLineWidth(0.5);
+    doc.rect(40,160,515,160); // bigger box for image
+    doc.setFontSize(12);
+    doc.text(`Modelo: ${modelo}`, 50, 185);
+    doc.text(`Cilindraje: ${anio}`, 50, 205); // using anio field as cilindraje when provided
+    doc.text(`Año: ${anio}`, 260, 185);
+    doc.text(`Precio: ${precio}`, 260, 205);
+
+    // Observaciones
+    doc.setFontSize(10);
+    doc.text('Observaciones:', 40, 340);
+    doc.setFontSize(9);
+    doc.text(obs || ' ', 40, 360, {maxWidth:510});
+
+    // Insert image if possible (try to load)
+    try{
+        if(imgSrc){
+            const dataURL = await loadImageAsDataURL(imgSrc, 420, 280);
+            // position image inside the box
+            doc.addImage(dataURL, 'JPEG', 50, 220, 220, 120);
+        } else {
+            // try to find selected moto image on page
+            const items = document.querySelectorAll('.moto-item');
+            let found = null;
+            if(lastClickedModel){
+                for(const it of items){
+                    if(it.textContent && it.textContent.includes(lastClickedModel)){
+                        found = it;
+                        break;
+                    }
+                }
+            }
+            if(!found){
+                const visibleSection = Array.from(document.querySelectorAll('.moto-section')).find(s=>s.style.display !== 'none');
+                if(visibleSection) found = visibleSection.querySelector('.moto-item');
+            }
+            if(found){
+                const img = found.querySelector('img');
+                if(img && img.src){
+                    const dataURL = await loadImageAsDataURL(img.src, 420, 280);
+                    doc.addImage(dataURL, 'JPEG', 50, 220, 220, 120);
+                }
+            }
+        }
+    }catch(e){
+        console.warn('Imagen no incluida en PDF:', e);
+    }
+
+    // Generate QR and insert into PDF
+    const tmp = document.createElement('div');
+    new QRCode(tmp, { text: QR_LINK, width:160, height:160, correctLevel: QRCode.CorrectLevel.H });
+    await new Promise(res=>setTimeout(res, 140));
+    const qrImg = tmp.querySelector('img') || tmp.querySelector('canvas');
+    if(qrImg){
+        const qrData = (qrImg.tagName.toLowerCase() === 'img') ? qrImg.src : qrImg.toDataURL('image/png');
+        doc.addImage(qrData, 'PNG', 420, 360, 120, 120);
+    }
+    tmp.remove();
+
+    // Footer notes
+    doc.setFontSize(9);
+    doc.text('Visítanos: ' + QR_LINK, 40, 780);
+    doc.text('Cotización informativa - No constituye compromiso de venta.', 40, 796);
+
+    // Save
+    const safeModel = modelo.replace(/[^\w\-]/g,'_') || 'cotizacion';
+    doc.save(`volante_${safeModel}.pdf`);
+}
+
+// attach showLogin to the header Admin button if exists
+document.addEventListener('DOMContentLoaded', ()=>{
+    // find header admin button (text 'Admin' or the lock emoji)
+    const adminBtn = Array.from(document.querySelectorAll('button')).find(b=>/(Admin|🔐)/i.test(b.textContent));
+    if(adminBtn) adminBtn.addEventListener('click', showLogin);
+});
+</script>
+
 </body>
 </html>
 
