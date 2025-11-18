@@ -762,11 +762,26 @@
                 <button class="btn-primary" onclick="generatePDF()">🎨 Generar Vista Previa del Volante</button>
             </div>
 
-            <div id="pdfPreview" class="pdf-preview" style="display: none; margin-top: 30px;">
-                <h3 style="color: var(--text-accent); margin-bottom: 20px;">Vista Previa:</h3>
-                <div style="background: white; padding: 40px; border-radius: 12px; color: black;">
-                    <div id="pdfContent"></div>
-                </div>
+            
+<div id="pdfPreview" class="pdf-preview" style="display: none; margin-top: 30px;">
+    <h3 style="color: var(--text-accent); margin-bottom: 20px;">Vista Previa:</h3>
+
+    <div id="pdfCaptureArea" 
+         style="background: white; 
+                padding: 40px; 
+                border-radius: 12px; 
+                color: black; 
+                width: 100%;
+                box-sizing: border-box;">
+
+        <div id="pdfContent"></div>
+    </div>
+
+    <button class="btn-primary" style="margin-top: 20px;" onclick="generarVolantePDF()">
+        🧾 Generar PDF
+    </button>
+</div>
+
                 <button class="btn-primary" style="margin-top: 20px;" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
             </div>
         </div>
@@ -1238,6 +1253,29 @@
             loadStats();
         }
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+async function generarVolantePDF() {
+    const volante = document.getElementById("pdfCaptureArea");
+    if (!volante) {
+        alert("No se encontró el contenedor del volante.");
+        return;
+    }
+    await new Promise(res => setTimeout(res, 200));
+    const canvas = await html2canvas(volante, { scale: 3, useCORS: true, allowTaint: true });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jspdf.jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save("Volante_MotoMania_JC.pdf");
+}
+</script>
+
 </body>
 </html>
  <main>
@@ -2523,6 +2561,29 @@
             window.open(whatsappUrl, '_blank');
         }
     </script> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+async function generarVolantePDF() {
+    const volante = document.getElementById("pdfCaptureArea");
+    if (!volante) {
+        alert("No se encontró el contenedor del volante.");
+        return;
+    }
+    await new Promise(res => setTimeout(res, 200));
+    const canvas = await html2canvas(volante, { scale: 3, useCORS: true, allowTaint: true });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jspdf.jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save("Volante_MotoMania_JC.pdf");
+}
+</script>
+
 </body>
 
 </html>
