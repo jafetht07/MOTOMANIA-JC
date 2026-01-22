@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migración de Datos a Firebase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #856404;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #0c5460;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success strong {
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error strong {
+            color: #721c24;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 30px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-success {
+            color: #28a745;
+        }
+
+        .log-error {
+            color: #dc3545;
+        }
+
+        .log-info {
+            color: #17a2b8;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Migración de Datos a Firebase</h1>
+        <p class="subtitle">Importa todas tus motocicletas a la base de datos</p>
+
+        <div class="warning">
+            <strong>⚠️ Importante:</strong> Asegúrate de haber configurado Firebase correctamente en el archivo <code>firebase-config.js</code> antes de ejecutar la migración.
+        </div>
+
+        <div class="info" id="infoBox">
+            <strong>📊 Datos a migrar:</strong>
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li><strong id="totalMotos">0</strong> motocicletas</li>
+                <li><strong id="totalMarcas">0</strong> marcas diferentes</li>
+            </ul>
+        </div>
+
+        <div class="success" id="successBox">
+            <strong>✅ ¡Migración completada exitosamente!</strong>
+            <p style="margin-top: 10px;">Todas las motocicletas han sido importadas a Firebase.</p>
+        </div>
+
+        <div class="error" id="errorBox">
+            <strong>❌ Error en la migración</strong>
+            <p style="margin-top: 10px;" id="errorMessage"></p>
+        </div>
+
+        <div class="stats" id="statsBox">
+            <div class="stat-card">
+                <div class="stat-number" id="statSuccess">0</div>
+                <div class="stat-label">Exitosas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statError">0</div>
+                <div class="stat-label">Errores</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statTotal">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+
+        <div class="progress" id="progressBar">
+            <div class="progress-bar" id="progress">0%</div>
+        </div>
+
+        <button class="btn" id="migrateBtn" onclick="startMigration()">
+            🏍️ Iniciar Migración
+        </button>
+
+        <button class="btn" id="viewDataBtn" onclick="window.location.href='index.html'" style="display: none; background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            👁️ Ver Página Principal
+        </button>
+
+        <div class="log" id="logBox"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // Base de datos completa de motocicletas
+        const motorcycles = [
+            // Honda
+            { brand: 'Honda', model: 'XR190L', cc: '190cc', price: '₡2.193.900', year: '2026', imageUrl: 'Honda XR190CT.jpeg' },
+            { brand: 'Honda', model: 'NX190', cc: '190cc', price: '₡2.254.900', year: '2026', imageUrl: 'Honda NX190.jpeg' },
+            { brand: 'Honda', model: 'XR150L', cc: '150cc', price: '₡1.823.900', year: '2026', imageUrl: 'Honda XR150L 2025.jpeg' },
+            { brand: 'Honda', model: 'CRF300L', cc: '300cc', price: '₡4.528.900', year: '2025', imageUrl: 'Honda CRF300L.jpeg' },
+            { brand: 'Honda', model: 'XR300', cc: '300cc', price: '₡3.985.900', year: '2025', imageUrl: 'Honda XR300.jpeg' },
+            { brand: 'Honda', model: 'NAVI 110', cc: '110cc', price: '₡1.057.900', year: '2025', imageUrl: 'Honda NAVI 110.jpeg' },
+            { brand: 'Honda', model: 'XRE300', cc: '300cc', price: '₡4.100.000', year: '2024', imageUrl: 'Honda XRE300.jpeg' },
+            { brand: 'Honda', model: 'XBLADE 160', cc: '160cc', price: '₡1.260.900', year: '2025', imageUrl: 'Honda XBLADE 160.jpeg' },
+            { brand: 'Honda', model: 'CB160 HORNET', cc: '160cc', price: '₡1.361.900', year: '2025', imageUrl: 'Honda CB160 HORNET.jpeg' },
+            { brand: 'Honda', model: 'CRF250F', cc: '250cc', price: '₡3.816.900', year: '2024', imageUrl: 'Honda CRF250F.jpeg' },
+            { brand: 'Honda', model: 'CB190R', cc: '190cc', price: '₡1.970.900', year: '2026', imageUrl: 'Honda CB190R.jpeg' },
+            { brand: 'Honda', model: 'CB300 TWISTER', cc: '300cc', price: '₡2.698.900', year: '2025', imageUrl: 'Honda CB300 TWISTER.jpeg' },
+            { brand: 'Honda', model: 'XR250 TORNADO', cc: '250cc', price: '₡3.420.900', year: '2025', imageUrl: 'Honda XR250 TORNADO.jpeg' },
+            
+            // KTM
+            { brand: 'KTM', model: 'DUKE 200', cc: '200cc', price: '₡2.765.900', year: '2025', imageUrl: 'KTM DUKE 200.jpeg' },
+            { brand: 'KTM', model: 'DUKE 250', cc: '250cc', price: '₡3.876.900', year: '2025', imageUrl: 'KTM DUKE 250.jpeg' },
+            { brand: 'KTM', model: 'DUKE 790', cc: '790cc', price: '₡7.529.900', year: '2025', imageUrl: 'KTM DUKE 790.jpeg' },
+            { brand: 'KTM', model: 'DUKE 390', cc: '390cc', price: '₡5.097.900', year: '2025', imageUrl: 'KTM DUKE 390.jpeg' },
+            
+            // Formula
+            { brand: 'Formula', model: 'NANO SPEED 230', cc: '230cc', price: '₡1.241.900', year: '2025', imageUrl: 'Formula NANO SPEED 230.jpeg' },
+            { brand: 'Formula', model: 'NANO R 200', cc: '200cc', price: '₡1.190.900', year: '2026', imageUrl: 'Formula NANO R 200.jpeg' },
+            { brand: 'Formula', model: 'CYCLONE 250', cc: '250cc', price: '₡1.613.900', year: '2026', imageUrl: 'Formula CYCLONE 250.jpeg' },
+            { brand: 'Formula', model: 'KPT', cc: '200cc', price: '₡2.217.900', year: '2026', imageUrl: 'Formula KPT.jpeg' },
+            { brand: 'Formula', model: 'NANO BASIC', cc: '200cc', price: '₡1.009.900', year: '2026', imageUrl: 'Formula NANO BASIC.jpeg' },
+            { brand: 'Formula', model: 'X2', cc: '200cc', price: '₡1.130.900', year: '2026', imageUrl: 'Formula X2.jpeg' },
+            { brand: 'Formula', model: 'NEXUS', cc: '150cc', price: '₡1.009.900', year: '2026', imageUrl: 'Formula NEXUS.jpeg' },
+            { brand: 'Formula', model: 'FABIO', cc: '200cc', price: '₡1.190.900', year: '2026', imageUrl: 'Formula FABIO.jpeg' },
+            { brand: 'Formula', model: 'MAGNUM', cc: '200cc', price: '₡1.130.900', year: '2026', imageUrl: 'Formula MAGNUM.jpeg' },
+            { brand: 'Formula', model: 'NANO 250S', cc: '250cc', price: '₡1.251.900', year: '2026', imageUrl: 'Formula NANO 250S.jpeg' },
+            { brand: 'Formula', model: 'GO 150', cc: '150cc', price: '₡1.130.900', year: '2026', imageUrl: 'Formula GO 150.jpeg' },
+            { brand: 'Formula', model: 'LX250', cc: '250cc', price: '₡1.492.900', year: '2026', imageUrl: 'Formula LX250.jpeg' },
+            { brand: 'Formula', model: 'LX200', cc: '200cc', price: '₡1.372.900', year: '2026', imageUrl: 'Formula LX200.jpeg' },
+            { brand: 'Formula', model: 'REBEL 250', cc: '250cc', price: '₡1.553.900', year: '2026', imageUrl: 'Formula REBEL 250.jpeg' },
+            { brand: 'Formula', model: 'TEKKEN 300', cc: '300cc', price: '₡1.734.900', year: '2026', imageUrl: 'Formula TEKKEN 300.jpeg' },
+            
+            // Yamaha
+            { brand: 'Yamaha', model: 'R3', cc: '321cc', price: '₡5.010.900', year: '2024', imageUrl: 'Yamaha R3 2024.jpeg' },
+            { brand: 'Yamaha', model: 'FZN150D', cc: '150cc', price: '₡2.037.900', year: '2025', imageUrl: 'Yamaha FZN150D.jpeg' },
+            { brand: 'Yamaha', model: 'FZN150', cc: '150cc', price: '₡2.037.900', year: '2025', imageUrl: 'Yamaha FZN150.jpeg' },
+            { brand: 'Yamaha', model: 'FZN150DA', cc: '150cc', price: '₡2.163.900', year: '2025', imageUrl: 'Yamaha FZN150DA.jpeg' },
+            { brand: 'Yamaha', model: 'XTZ150', cc: '150cc', price: '₡2.288.900', year: '2025', imageUrl: 'Yamaha XTZ150.jpeg' },
+            { brand: 'Yamaha', model: 'FZN250', cc: '250cc', price: '₡2.738.900', year: '2025', imageUrl: 'Yamaha FZN250.jpeg' },
+            { brand: 'Yamaha', model: 'XTZ125', cc: '125cc', price: '₡1.962.900', year: '2026', imageUrl: 'Yamaha XTZ125.jpeg' },
+            { brand: 'Yamaha', model: 'YBR125 ED', cc: '125cc', price: '₡1.563.900', year: '2025', imageUrl: 'Yamaha YBR125 ED.jpeg' },
+            { brand: 'Yamaha', model: 'YBR125G', cc: '125cc', price: '₡1.599.900', year: '2025', imageUrl: 'Yamaha YBR125G.jpeg' },
+            { brand: 'Yamaha', model: 'MT03', cc: '321cc', price: '₡4.817.900', year: '2025', imageUrl: 'Yamaha MT03.jpeg' },
+            
+            // Suzuki
+            { brand: 'Suzuki', model: 'GN125H', cc: '125cc', price: '₡1.660.900', year: '2026', imageUrl: 'Suzuki GN125H 2025.jpeg' },
+            { brand: 'Suzuki', model: 'GIXXER SFDI 150', cc: '150cc', price: '₡2.305.900', year: '2026', imageUrl: 'Suzuki GIXXER SFDI 150CC.jpeg' },
+            { brand: 'Suzuki', model: 'VSTROM 250', cc: '250cc', price: '₡3.567.900', year: '2025', imageUrl: 'Suzuki VSTROM 250CC 2025.jpeg' },
+            { brand: 'Suzuki', model: 'GIXXER 250', cc: '250cc', price: '₡3.153.150', year: '2024', imageUrl: 'Suzuki GIXXER 250CC 2024.jpeg' },
+            { brand: 'Suzuki', model: 'AX4', cc: '115cc', price: '₡1.112.900', year: '2025', imageUrl: 'Suzuki AX4 2025.jpeg' },
+            
+            // Freedom
+            { brand: 'Freedom', model: 'Hercules VII', cc: '200cc', price: '₡1.361.900', year: '2025', imageUrl: 'Hercules VII 2025.jpeg' },
+            { brand: 'Freedom', model: 'Carrera 220', cc: '220cc', price: '₡1.711.900', year: '2025', imageUrl: 'Freedom Carrera 2025.jpeg' },
+            { brand: 'Freedom', model: 'HR250', cc: '250cc', price: '₡1.528.900', year: '2025', imageUrl: 'Freedom HR250.jpeg' },
+            { brand: 'Freedom', model: 'HERCULES 150', cc: '150cc', price: '₡1.047.900', year: '2026', imageUrl: 'Freedom HERCULES 150.jpeg' },
+            { brand: 'Freedom', model: 'THUNDER 200', cc: '200cc', price: '₡1.107.900', year: '2026', imageUrl: 'Freedom THUNDER 200.jpeg' },
+            { brand: 'Freedom', model: 'FIRE 200', cc: '200cc', price: '₡1.047.900', year: '2026', imageUrl: 'Freedom FIRE 200.jpeg' },
+            { brand: 'Freedom', model: 'ZS200', cc: '200cc', price: '₡1.023.900', year: '2026', imageUrl: 'Freedom ZS200.jpeg' },
+            { brand: 'Freedom', model: 'ZS150', cc: '150cc', price: '₡926.900', year: '2026', imageUrl: 'Freedom ZS150.jpeg' },
+            { brand: 'Freedom', model: 'HERCULES III', cc: '200cc', price: '₡1.445.900', year: '2026', imageUrl: 'Freedom HERCULES III.jpeg' },
+            { brand: 'Freedom', model: 'RX1 200', cc: '200cc', price: '₡2.013.900', year: '2025', imageUrl: 'Freedom RX1 200.jpeg' },
+            { brand: 'Freedom', model: 'RX3', cc: '250cc', price: '₡2.562.900', year: '2026', imageUrl: 'Freedom RX3.jpeg' },
+            
+            // Katana
+            { brand: 'Katana', model: 'SX2 250', cc: '250cc', price: '₡2.019.900', year: '2025', imageUrl: 'Katana SX2 2025.jpeg' },
+            { brand: 'Katana', model: 'SMX 200', cc: '200cc', price: '₡1.456.900', year: '2026', imageUrl: 'Katana SMX 2025.jpeg' },
+            { brand: 'Katana', model: 'GN200K', cc: '200cc', price: '₡1.043.900', year: '2025', imageUrl: 'Katana GN200K.jpeg' },
+            { brand: 'Katana', model: 'SMX150', cc: '150cc', price: '₡1.158.900', year: '2025', imageUrl: 'Katana SMX150.jpeg' },
+            
+            // Serpento
+            { brand: 'Serpento', model: 'NOVA 150', cc: '150cc', price: '₡955.900', year: '2025', imageUrl: 'Serpento NOVA 150.jpeg' },
+            { brand: 'Serpento', model: 'YARA 250R', cc: '250cc', price: '₡1.069.900', year: '2026', imageUrl: 'Serpento YARA 250R.jpeg' },
+            { brand: 'Serpento', model: 'VIPER 250', cc: '250cc', price: '₡1.199.900', year: '2025', imageUrl: 'Serpento VIPER 250.jpeg' },
+            { brand: 'Serpento', model: 'HURRICANE 250', cc: '250cc', price: '₡1.199.900', year: '2025', imageUrl: 'Serpento HURRICANE 250.jpeg' },
+            { brand: 'Serpento', model: 'NAGA 200', cc: '200cc', price: '₡1.099.900', year: '2025', imageUrl: 'Serpento NAGA 200.jpeg' },
+            { brand: 'Serpento', model: 'TAYPAN R 200', cc: '200cc', price: '₡799.900', year: '2025', imageUrl: 'Serpento TAYPAN R 200.jpeg' },
+            { brand: 'Serpento', model: 'ASPID 200', cc: '200cc', price: '₡898.900', year: '2026', imageUrl: 'Serpento ASPID 200.jpeg' },
+            
+            // Haojue
+            { brand: 'Haojue', model: 'DL160', cc: '160cc', price: '₡2.164.900', year: '2026', imageUrl: 'Haojue DL160.jpeg' },
+            { brand: 'Haojue', model: 'DR160S', cc: '160cc', price: '₡1.978.900', year: '2026', imageUrl: 'Haojue DR160S.jpeg' },
+            { brand: 'Haojue', model: 'NK150S', cc: '150cc', price: '₡1.928.900', year: '2026', imageUrl: 'Haojue NK150S INYECTADA.jpeg' },
+            { brand: 'Haojue', model: 'NK150', cc: '150cc', price: '₡1.791.900', year: '2026', imageUrl: 'Haojue NK150.jpeg' },
+            { brand: 'Haojue', model: 'HJ125', cc: '125cc', price: '₡1.295.900', year: '2026', imageUrl: 'Haojue HJ150.jpeg' },
+            { brand: 'Haojue', model: 'DM125S', cc: '125cc', price: '₡1.074.900', year: '2026', imageUrl: 'Haojue DM125S.jpeg' },
+            { brand: 'Haojue', model: 'TZ150 PRO', cc: '150cc', price: '₡1.309.900', year: '2026', imageUrl: 'Haojue TZ150 PRO.jpeg' },
+            { brand: 'Haojue', model: 'KA150', cc: '150cc', price: '₡1.369.900', year: '2026', imageUrl: 'Haojue KA150.jpeg' },
+            
+            // Bajaj
+            { brand: 'Bajaj', model: 'PULSAR NS200UG', cc: '200cc', price: '₡2.150.900', year: '2026', imageUrl: 'Bajaj PULSAR NS 200UG.jpeg' },
+            { brand: 'Bajaj', model: 'PULSAR N160', cc: '160cc', price: '₡1.503.900', year: '2026', imageUrl: 'Bajaj PULSAR N160.jpeg' },
+            { brand: 'Bajaj', model: 'PULSAR NS125', cc: '125cc', price: '₡1.251.900', year: '2025', imageUrl: 'Bajaj PULSAR NS125.jpeg' },
+            { brand: 'Bajaj', model: 'BOXER', cc: '150cc', price: '₡1.215.900', year: '2026', imageUrl: 'Bajaj BOXER.jpeg' },
+            { brand: 'Bajaj', model: 'PULSAR NS160UG', cc: '160cc', price: '₡1.463.900', year: '2025', imageUrl: 'Bajaj PULSAR NS160UG.jpeg' },
+            { brand: 'Bajaj', model: 'DOMINAR 400', cc: '400cc', price: '₡3.557.900', year: '2026', imageUrl: 'BAJAJ DOMINAR 400.jpeg' },
+            
+            // Benelli
+            { brand: 'Benelli', model: 'TNT150I', cc: '150cc', price: '₡1.395.900', year: '2025', imageUrl: 'Benelli TNT150I.jpeg' },
+            { brand: 'Benelli', model: '180S', cc: '180cc', price: '₡2.207.900', year: '2025', imageUrl: 'Benelli 180S.jpeg' },
+            { brand: 'Benelli', model: 'TNT250', cc: '250cc', price: '₡2.558.900', year: '2025', imageUrl: 'Benelli TNT250.jpeg' },
+            { brand: 'Benelli', model: 'TNT135', cc: '135cc', price: '₡2.096.900', year: '2025', imageUrl: 'Benelli TNT135.jpeg' },
+            
+            // Vento
+            { brand: 'Vento', model: 'ALPINA', cc: '300cc', price: '₡2.293.900', year: '2026', imageUrl: 'Vento ALPINA.jpeg' },
+            { brand: 'Vento', model: 'GTS300', cc: '300cc', price: '₡1.837.900', year: '2026', imageUrl: 'Vento GTS300.jpeg' },
+            { brand: 'Vento', model: 'CROSSMAX 200', cc: '200cc', price: '₡1.206.900', year: '2025', imageUrl: 'Vento CROSSMAX 200CC.jpeg' },
+            { brand: 'Vento', model: 'CROSSMAX 150', cc: '150cc', price: '₡1.148.900', year: '2026', imageUrl: 'Vento CROSSMAX 150CC.jpeg' },
+            { brand: 'Vento', model: 'CRUISER 200', cc: '200cc', price: '₡1.033.900', year: '2026', imageUrl: 'Vento CRUISER 200CC.jpeg' },
+            { brand: 'Vento', model: 'CROSSMAX 250', cc: '250cc', price: '₡1.603.900', year: '2026', imageUrl: 'Vento CROSSMAX 250CC.jpeg' },
+            { brand: 'Vento', model: 'THRILLER', cc: '200cc', price: '₡1.206.900', year: '2026', imageUrl: 'Vento THRILLER.jpeg' },
+            
+            // TVS
+            { brand: 'TVS', model: 'APACHE 4V', cc: '200cc', price: '₡1.723.000', year: '2026', imageUrl: 'TVS APACHE 4V.jpeg' },
+            { brand: 'TVS', model: 'APACHE RTR 160 4V', cc: '160cc', price: '₡1.723.900', year: '2026', imageUrl: 'TVS APACHE RTR 160 4V.jpeg' },
+            { brand: 'TVS', model: 'APACHE RTR 160', cc: '160cc', price: '₡1.387.900', year: '2025', imageUrl: 'TVS APACHE RTR 160.jpeg' },
+            
+            // Cuadraciclos
+            { brand: 'Cuadraciclos', model: 'KYMCO MXU300R', cc: '300cc', price: '₡4.015.900', year: '2025', imageUrl: 'Cuadraciclo KYMCO MXU300R.jpeg' },
+            { brand: 'Cuadraciclos', model: 'KYMCO MXU400', cc: '400cc', price: '₡5.252.900', year: '2025', imageUrl: 'Cuadraciclo KYMCO MXU400.jpeg' },
+            { brand: 'Cuadraciclos', model: 'XWOLF 200', cc: '200cc', price: '₡2.878.900', year: '2025', imageUrl: 'Cuadraciclo XWOLF 200.jpeg' },
+            { brand: 'Cuadraciclos', model: 'XWOLF 300', cc: '300cc', price: '₡4.139.900', year: '2025', imageUrl: 'Cuadraciclo XWOLF 300.jpeg' },
+            { brand: 'Cuadraciclos', model: 'KYMCO MXU150', cc: '150cc', price: '₡2.621.900', year: '2025', imageUrl: 'Cuadraciclo KYMCO MXU150.jpeg' },
+            
+            // Bicimotos
+            { brand: 'BICIMOTOS', model: 'SERPENTO BRAVO', cc: '110cc', price: '₡499.900', year: '2025', imageUrl: 'BICIMOTO SERPENTO BRAVO.jpeg' },
+            { brand: 'BICIMOTOS', model: 'KATANA MINI', cc: '110cc', price: '₡573.900', year: '2024', imageUrl: 'BICIMOTO KATANA MINI.jpeg' },
+            { brand: 'BICIMOTOS', model: 'FORMULA SUPER', cc: '110cc', price: '₡535.900', year: '2024', imageUrl: 'BICIMOTO FORMULA SUPER.jpeg' }
+        ];
+
+        // Variables para tracking
+        let successCount = 0;
+        let errorCount = 0;
+
+        // Mostrar información inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            const brands = [...new Set(motorcycles.map(m => m.brand))];
+            document.getElementById('totalMotos').textContent = motorcycles.length;
+            document.getElementById('totalMarcas').textContent = brands.length;
+        });
+
+        function addLog(message, type = 'info') {
+            const logBox = document.getElementById('logBox');
+            logBox.style.display = 'block';
+            
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function updateProgress(current, total) {
+            const percentage = Math.round((current / total) * 100);
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+        }
+
+        async function startMigration() {
+            const btn = document.getElementById('migrateBtn');
+            const progressBar = document.getElementById('progressBar');
+            const statsBox = document.getElementById('statsBox');
+            const successBox = document.getElementById('successBox');
+            const errorBox = document.getElementById('errorBox');
+            const viewDataBtn = document.getElementById('viewDataBtn');
+
+            // Reset
+            successCount = 0;
+            errorCount = 0;
+            successBox.style.display = 'none';
+            errorBox.style.display = 'none';
+            
+            // Disable button
+            btn.disabled = true;
+            btn.textContent = '⏳ Migrando...';
+            
+            // Show progress
+            progressBar.style.display = 'block';
+            statsBox.style.display = 'grid';
+            
+            addLog(`Iniciando migración de ${motorcycles.length} motocicletas...`, 'info');
+
+            try {
+                const total = motorcycles.length;
+                
+                for (let i = 0; i < total; i++) {
+                    const moto = motorcycles[i];
+                    
+                    try {
+                        // Agregar a Firebase
+                        await db.collection('motorcycles').add({
+                            brand: moto.brand,
+                            model: moto.model,
+                            cc: moto.cc,
+                            price: moto.price,
+                            year: moto.year,
+                            imageUrl: moto.imageUrl || '',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        
+                        successCount++;
+                        addLog(`✓ ${moto.brand} ${moto.model} - Importada exitosamente`, 'success');
+                        
+                    } catch (error) {
+                        errorCount++;
+                        addLog(`✗ ${moto.brand} ${moto.model} - Error: ${error.message}`, 'error');
+                    }
+                    
+                    // Update progress
+                    updateProgress(i + 1, total);
+                    
+                    // Update stats
+                    document.getElementById('statSuccess').textContent = successCount;
+                    document.getElementById('statError').textContent = errorCount;
+                    document.getElementById('statTotal').textContent = i + 1;
+                }
+                
+                // Show success message
+                if (errorCount === 0) {
+                    successBox.style.display = 'block';
+                    addLog('🎉 Migración completada sin errores', 'success');
+                } else {
+                    errorBox.style.display = 'block';
+                    document.getElementById('errorMessage').textContent = 
+                        `Se completó la migración con ${errorCount} errores. Revisa el log para más detalles.`;
+                    addLog(`⚠️ Migración completada con ${errorCount} errores`, 'error');
+                }
+                
+                btn.textContent = '✅ Migración Completada';
+                viewDataBtn.style.display = 'block';
+                
+            } catch (error) {
+                errorBox.style.display = 'block';
+                document.getElementById('errorMessage').textContent = error.message;
+                addLog(`❌ Error crítico: ${error.message}`, 'error');
+                btn.disabled = false;
+                btn.textContent = '🔄 Reintentar Migración';
+            }
+        }
+    </script>
+</body>
+</html>RAIDER', cc: '125cc', price: '₡1.263.900', year: '2026', imageUrl: 'TVS RAIDER.jpeg' },
+            { brand: 'TVS', model: 'HLX', cc: '150cc', price: '₡1.148.900', year: '2025', imageUrl: 'TVS HLX.jpeg' },
+            { brand: 'TVS', model: 'APACHE 4V FI', cc: '200cc', price: '₡2.297.900', year: '2026', imageUrl: 'TVS APACHE 4V FI.jpeg' },
+            { brand: 'TVS', model: '
