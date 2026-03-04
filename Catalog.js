@@ -5,23 +5,21 @@
 
 const GITHUB_BASE = 'https://jafetht07.github.io/MOTOMANIA-JC/';
 
-// Logos que ya están en GitHub — respaldo automático
+// Logos que ya están en GitHub — nombres exactos
 const githubLogos = {
-    'Benelli':      GITHUB_BASE + 'Benelli-logo.jpeg',
+    'Honda':        GITHUB_BASE + 'honda-logo.jpeg',
+    'Yamaha':       GITHUB_BASE + 'yamaha-logo.jpeg',
+    'Suzuki':       GITHUB_BASE + 'suzuki-logo.jpeg',
+    'Bajaj':        GITHUB_BASE + 'bajaj-logo.jpeg',
+    'TVS':          GITHUB_BASE + 'tvs-logo.jpeg',
+    'Haojue':       GITHUB_BASE + 'Haojue-logo.jpeg',
+    'Vento':        GITHUB_BASE + 'Vento-logo.jpeg',
     'Formula':      GITHUB_BASE + 'Formula-logo.jpeg',
     'Freedom':      GITHUB_BASE + 'Freedom-logo.jpeg',
-    'Haojue':       GITHUB_BASE + 'Haojue-logo.jpeg',
-    'Honda':        GITHUB_BASE + 'Honda-logo.jpeg',
-    'KTM':          GITHUB_BASE + 'KTM-logo.jpeg',
-    'Katana':       GITHUB_BASE + 'Katana-logo.jpeg',
-    'Yamaha':       GITHUB_BASE + 'Yamaha-logo.jpeg',
-    'Suzuki':       GITHUB_BASE + 'Suzuki-logo.jpeg',
-    'Bajaj':        GITHUB_BASE + 'Bajaj-logo.jpeg',
-    'TVS':          GITHUB_BASE + 'TVS-logo.jpeg',
-    'Vento':        GITHUB_BASE + 'Vento-logo.jpeg',
     'Serpento':     GITHUB_BASE + 'Serpento-logo.jpeg',
-    'BICIMOTOS':    GITHUB_BASE + 'Bicimotos-logo.jpeg',
-    'Cuadraciclos': GITHUB_BASE + 'Cuadraciclos-logo.jpeg',
+    'Benelli':      GITHUB_BASE + 'Benelli-logo.jpeg',
+    'Katana':       GITHUB_BASE + 'Katana-logo.jpeg',
+    'KTM':          GITHUB_BASE + 'KTM-logo.jpeg',
 };
 
 // ── Obtener logo de una marca (Firebase primero, GitHub como respaldo) ──
