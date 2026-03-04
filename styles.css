@@ -531,14 +531,25 @@ body::after {
 
 .moto-item button:hover { background: #23c70e; transform: scale(1.05); }
 
-.moto-image {
-    width: 100%; height: auto;
+.moto-image-wrapper {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: rgba(0,0,0,0.2);
     border-radius: 8px;
     margin-bottom: 10px;
     border: 2px solid #130047;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    object-fit: cover;
-    max-height: 180px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.moto-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 6px;
 }
 
 /* ======================================
