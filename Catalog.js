@@ -1,45 +1,30 @@
 // ======================================
 // MÓDULO DE CATÁLOGO PÚBLICO
+// Logos cargados desde Firebase
 // ======================================
-
-// Logos de marcas (agrega más según necesites)
-const brandLogos = {
-    Honda:       'honda-logo.jpeg',
-    KTM:         'KTM-logo.jpeg',
-    Yamaha:      'yamaha-logo.jpeg',
-    Suzuki:      'suzuki-logo.jpeg',
-    Formula:     'Formula-logo.jpeg',
-    Freedom:     'Freedom-logo.jpeg',
-    Serpento:    'Serpento-logo.jpeg',
-    Haojue:      'Haojue-logo.jpeg',
-    Bajaj:       'bajaj-logo.jpeg',
-    Vento:       'Vento-logo.jpeg',
-    TVS:         'tvs-logo.jpeg',
-    Benelli:     'Benelli-logo.jpeg',
-    Cuadraciclos:'',          // sin logo propio
-    Katana:      'Katana-logo.jpeg',
-    BICIMOTOS:   ''
-};
 
 // ── Actualizar selector y grid de marcas ──
 function updateBrandsList() {
-    const brands = [...new Set(motorcycles.map(m => m.brand))].sort();
+    const brandNames = [...new Set(motorcycles.map(m => m.brand))].sort();
 
-    // Selector del menú
+    // Selector dropdown
     const select = document.getElementById('marca');
     select.innerHTML = '<option value="">--Seleccionar--</option>';
-    brands.forEach(brand => {
+    brandNames.forEach(brand => {
         select.innerHTML += `<option value="${brand}">${brand}</option>`;
     });
 
-    // Grid de logos
+    // Grid de logos — usa logos de Firebase si existen, si no emoji
     const container = document.getElementById('brandsContainer');
-    container.innerHTML = brands.map(brand => {
-        const logo = brandLogos[brand] || '';
+    container.innerHTML = brandNames.map(brand => {
+        const brandData = (typeof brands !== 'undefined') ? brands.find(b => b.name === brand) : null;
+        const logoUrl   = brandData ? brandData.logoUrl : '';
         return `
             <div class="brand" onclick="showBrandMotos('${brand}')">
-                ${logo
-                    ? `<img src="${logo}" alt="${brand}" onerror="this.style.display='none'">`
+                ${logoUrl
+                    ? `<div class="brand-logo-wrapper">
+                           <img src="${logoUrl}" alt="${brand}" onerror="this.closest('.brand-logo-wrapper').innerHTML='<span style=font-size:2rem>🏍️</span>'">
+                       </div>`
                     : `<div style="width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:2rem;">🏍️</div>`
                 }
                 <p>${brand}</p>
@@ -54,7 +39,7 @@ function showBrandMotos(brand) {
     showModels();
 }
 
-// ── Mostrar modelos de la marca seleccionada en el select ──
+// ── Mostrar modelos de la marca seleccionada ──
 function showModels() {
     const marca = document.getElementById('marca').value;
     if (!marca) return;
@@ -74,8 +59,8 @@ function showModels() {
             <div class="moto-item">
                 ${moto.imageUrl
                     ? `<div class="moto-image-wrapper">
-                         <img src="${moto.imageUrl}" alt="${moto.model}" class="moto-image"
-                              onerror="this.closest('.moto-image-wrapper').style.display='none'">
+                           <img src="${moto.imageUrl}" alt="${moto.model}" class="moto-image"
+                                onerror="this.closest('.moto-image-wrapper').style.display='none'">
                        </div>`
                     : ''
                 }
@@ -92,15 +77,12 @@ function showModels() {
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
-// ── Cerrar sección de motos ──
 function hideMotoSection() {
     document.getElementById('moto-section').style.display = 'none';
     document.getElementById('marca').value = '';
 }
 
-// ── Enviar mensaje de WhatsApp ──
 function sendMessage(moto) {
     const message = `¡Hola! Jafeth, estoy interesado en una motocicleta. Me gustaría saber más información sobre el modelo ${moto}.`;
-    const whatsappUrl = `https://wa.me/+50689354332?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(`https://wa.me/+50689354332?text=${encodeURIComponent(message)}`, '_blank');
 }
