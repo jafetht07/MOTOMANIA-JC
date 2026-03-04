@@ -1,221 +1,616 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Moto Mania JC: La mejor tienda de motos con las últimas novedades y modelos.">
-    <title>Página de Moto Mania JC</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            background-image: url('FTP.jpeg'); /* Imagen de fondo */
-            background-size: cover;
-            background-position: center;
-        }
+/* ======================================
+   VARIABLES Y RESET
+====================================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        
-        /* Ajuste del fondo en dispositivos móviles */
-        @media (max-width: 768px) {
-            body {
-                background-image: url('FNG.jpg'); /* Elimina la imagen de fondo en móviles */
-                background-color: #bfcab970; /* Fondo naranja vivo en móviles */
-            }
-        }
+:root {
+    --primary-orange:  #f57c00;
+    --primary-dark:    #e65100;
+    --background-dark: rgba(0,0,0,0.85);
+    --card-dark:       rgba(17,17,17,0.95);
+    --text-light:      #e8e7ec;
+    --text-accent:     #ffa726;
+    --border-radius:   16px;
+    --shadow-light:    0 4px 20px rgba(255,167,38,0.15);
+    --shadow-strong:   0 8px 32px rgba(0,0,0,0.3);
+    --gradient-primary: linear-gradient(135deg,#f57c00,#ff9800);
+    --gradient-card:    linear-gradient(145deg,rgba(17,17,17,0.95),rgba(34,34,34,0.9));
+}
 
-        header {
-            background-color: rgba(241, 137, 0, 0.952);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            animation: slideDown 0.5s ease;
-        }
+/* ======================================
+   FONDO Y BODY
+====================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    color: var(--text-light);
+    line-height: 1.6;
+    position: relative;
+    font-size: 16px;
+}
 
-        @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url('FTT.jpeg') center/cover no-repeat fixed;
+    z-index: -2;
+}
 
-        h1 {
-            margin: 0;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: -1;
+}
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
+/* ======================================
+   LAYOUT
+====================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
+/* ======================================
+   HEADER
+====================================== */
+.header {
+    text-align: center;
+    padding: 50px 15px 25px;
+    background: var(--gradient-card);
+    margin: 15px auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-strong);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+}
 
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-        }
+.header h1 {
+    font-size: clamp(1.8rem, 8vw, 3.5rem);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
 
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
+.header p {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    color: var(--text-accent);
+    font-weight: 300;
+}
 
-        main {
-            padding: 20px;
-        }
+/* ======================================
+   BOTÓN ADMIN (esquina del header)
+====================================== */
+.admin-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 10;
+}
 
-        .motos {
-            padding: 20px;
-            text-align: center;
-        }
+.admin-btn:hover  { transform: scale(1.1) rotate(5deg); box-shadow: var(--shadow-strong); }
+.admin-btn:active { transform: scale(0.95); }
 
-        .moto-item {
-            background-color:#e75804;
-            border: 2px solid #130047;
-            padding: 20px;
-            margin: 20px;
-            display: inline-block;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            transition: transform 0.3s;
-            animation: fadeIn 0.5s ease;
-        }
+/* ======================================
+   MODAL DE LOGIN
+====================================== */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+.modal-content {
+    background: var(--gradient-card);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    max-width: 400px;
+    width: 90%;
+    box-shadow: var(--shadow-strong);
+    border: 1px solid rgba(255,255,255,0.1);
+}
 
-        .moto-item:hover {
-            transform: translateY(-5px);
-            background-color: #220fc9;
-            border-color: #a8e911;
-        }
+.modal-content h2 {
+    color: var(--text-accent);
+    margin-bottom: 30px;
+    text-align: center;
+}
 
-        .moto-item h3 {
-            margin-top: 0;
-            color: #020631;
-        }
+/* ======================================
+   FORMULARIOS GENÉRICOS
+====================================== */
+.form-group { margin-bottom: 20px; }
 
-        button {
-            background-color: #17dde4;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            margin-top: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-            animation: blink 1s infinite;
-        }
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-accent);
+    font-weight: 500;
+}
 
-        @keyframes blink {
-            0%, 100% {
-                box-shadow: 0 0 0 transparent;
-            }
-            50% {
-                box-shadow: 0 0 10px rgba(187, 169, 7, 0.7);
-            }
-        }
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+    color: var(--text-light);
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
 
-        button:hover {
-            background-color: #23c70e;
-            transform: scale(1.05);
-        }
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(245,124,0,0.2);
+}
 
-        footer {
-            background-color: #333;
-            color: rgb(238, 232, 232);
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+/* ======================================
+   BOTONES
+====================================== */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        .moto-image {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #130047;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-light); }
 
-        h3 {
-            font-size: 1.8em;
-            color: #2f3542;
-        }
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255,255,255,0.1);
+    color: var(--text-light);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
 
-        @media (max-width: 768px) {
-            .moto-item {
-                width: 90%;
-                margin: 10px auto;
-            }
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
 
-            nav ul li {
-                display: block;
-                margin: 5px 0;
-            }
+.btn-close {
+    display: block;
+    margin: 20px auto 0;
+    padding: 12px 24px;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: clamp(.9rem, 4vw, 1rem);
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s, box-shadow 0.3s;
+    max-width: 200px;
+    width: 100%;
+}
 
-            h1 {
-                font-size: 2em; /* Ajuste del tamaño de texto en el título */
-            }
+.btn-close:hover { transform: translateY(-2px); box-shadow: var(--shadow-strong); }
 
-            button {
-                font-size: 14px;
-                padding: 8px 16px; /* Botones más pequeños */
-            }
-        }
-    </style>
-</head>
-<body>
+.btn-edit   { padding: 8px 14px; background: var(--gradient-primary); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: opacity .2s; }
+.btn-delete { padding: 8px 14px; background: #e53935; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: opacity .2s; }
+.btn-edit:hover, .btn-delete:hover { opacity: .85; }
 
-<header>
-    <h1>Moto Mania JC</h1>
-    <nav>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Motos</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </nav>
-</header>
+.error-message { color: #ff5252; text-align: center; margin-top: 10px; font-size: 14px; }
 
-<main>
-    <div class="motos">
-        <div class="moto-item">
-            <img src="moto1.jpg" alt="Imagen de la Moto 1 - Modelo deportivo" class="moto-image"> <!-- Asegúrate que la imagen esté disponible -->
-            <h3>Moto 1</h3>
-            <button>Ver Detalles</button>
-        </div>
-        <div class="moto-item">
-            <img src="moto2.jpg" alt="Imagen de la Moto 2 - Modelo clásico" class="moto-image">
-            <h3>Moto 2</h3>
-            <button>Ver Detalles</button>
-        </div>
-    </div>
-</main>
+/* ======================================
+   PANEL DE ADMINISTRACIÓN
+====================================== */
+.admin-panel {
+    display: none;
+    margin: 20px auto;
+    background: var(--gradient-card);
+    padding: 20px 15px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-strong);
+    border: 1px solid rgba(255,255,255,0.1);
+}
 
-<footer>
-    <p>&copy; 2025 Moto Mania JC. Todos los derechos reservados.</p>
-</footer>
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-</body>
-</html>
+.admin-header h2 {
+    color: var(--text-accent);
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    width: 100%;
+    text-align: center;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 130px;
+    padding: 12px 15px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text-light);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: clamp(.85rem,3vw,1rem);
+    transition: background 0.3s;
+    text-align: center;
+}
+
+.tab-btn.active { background: var(--gradient-primary); border-color: var(--primary-orange); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Lista admin */
+.moto-item-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(255,255,255,.04);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.moto-item-admin-info  { flex: 1; min-width: 200px; }
+.moto-item-admin-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* ======================================
+   PDF GENERATOR
+====================================== */
+.pdf-generator {
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.moto-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px 5px;
+}
+
+.moto-checkbox {
+    background: var(--gradient-card);
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.moto-checkbox:hover   { border-color: var(--primary-orange); }
+.moto-checkbox.selected {
+    border-color: var(--text-accent);
+    background: linear-gradient(145deg,rgba(245,124,0,0.2),rgba(34,34,34,0.9));
+}
+
+.moto-checkbox label    { cursor: pointer; display: flex; align-items: flex-start; gap: 8px; font-size: clamp(.85rem,3vw,.95rem); }
+.moto-checkbox input    { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
+.moto-checkbox strong   { display: block; color: var(--text-accent); margin-bottom: 4px; }
+.moto-checkbox small    { color: #999; font-size: clamp(.75rem,2.5vw,.85rem); }
+
+.selected-count {
+    background: var(--gradient-primary);
+    padding: 12px 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: clamp(.9rem,3.5vw,1rem);
+}
+
+/* ======================================
+   MENÚ DE SELECCIÓN DE MARCA
+====================================== */
+.menu {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--gradient-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-strong);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.menu label {
+    display: block;
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    margin-bottom: 15px;
+    color: var(--text-accent);
+    font-weight: 500;
+}
+
+.menu select {
+    padding: 12px 40px 12px 15px;
+    font-size: clamp(14px,4vw,16px);
+    width: 100%;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: var(--gradient-card);
+    color: var(--text-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-light);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffa726' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    transition: border-color .3s, transform .2s, box-shadow .3s;
+}
+
+.menu select:hover { border-color: var(--primary-orange); transform: translateY(-1px); box-shadow: var(--shadow-strong); }
+.menu select:focus { border-color: var(--text-accent); box-shadow: 0 0 0 3px rgba(255,167,38,0.2); }
+.menu select option { background: #1a1a1a; color: var(--text-light); }
+
+/* ======================================
+   GRID DE MARCAS
+====================================== */
+.brands-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    background: var(--gradient-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-strong);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.brand {
+    background: black;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+    transition: transform .3s, box-shadow .3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.brand::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg,transparent,rgba(255,167,38,0.1),transparent);
+    transition: left .5s ease;
+}
+
+.brand:hover::before { left: 100%; }
+.brand:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(255,255,255,0.2); }
+
+.brand img {
+    width: 80px; height: 80px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    filter: brightness(.9);
+    transition: filter .3s;
+}
+
+.brand:hover img { filter: brightness(1.1); }
+
+.brand p {
+    font-weight: 600;
+    color: var(--text-accent);
+    font-size: clamp(.8rem,3vw,.9rem);
+}
+
+/* ======================================
+   SECCIÓN DE MODELOS
+====================================== */
+.moto-section {
+    display: none;
+    margin: 20px auto;
+    background: var(--gradient-card);
+    padding: 20px 15px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-strong);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: slideIn .5s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.moto-section h2 {
+    color: var(--text-accent);
+    font-size: clamp(1.4rem,5vw,1.8rem);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Moto cards del catálogo público */
+.moto-models {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.moto-item {
+    background: rgba(231,88,4,0.85);
+    border: 2px solid #130047;
+    padding: 20px;
+    width: 260px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-align: center;
+    transition: transform .3s, background .3s;
+    animation: fadeIn .4s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.moto-item:hover { transform: translateY(-5px); background: rgba(34,15,201,0.9); }
+
+.moto-item h3 { color: #fff; font-size: 1.2rem; margin-bottom: 10px; }
+.moto-item p  { color: #f0f0f0; margin: 4px 0; font-size: .95rem; }
+
+.moto-item button {
+    background: #17dde4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 12px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background .3s, transform .2s, box-shadow .2s;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { box-shadow: 0 0 0 transparent; }
+    50%       { box-shadow: 0 0 10px rgba(187,169,7,0.7); }
+}
+
+.moto-item button:hover { background: #23c70e; transform: scale(1.05); }
+
+.moto-image {
+    width: 100%; height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 2px solid #130047;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    object-fit: cover;
+    max-height: 180px;
+}
+
+/* ======================================
+   CONTACTO
+====================================== */
+.contact {
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-strong);
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 95%;
+}
+
+.contact h2 { margin-bottom: 20px; font-size: clamp(1.4rem,5vw,1.8rem); color: white; }
+
+.contact a {
+    display: block;
+    margin: 8px 0;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: white;
+    font-size: clamp(.9rem,4vw,1rem);
+    font-weight: 500;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: background .3s, transform .2s;
+}
+
+.contact a:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
+
+/* ======================================
+   FOOTER
+====================================== */
+footer {
+    text-align: center;
+    padding: 20px 15px;
+    margin: 30px auto 0;
+    background: var(--gradient-card);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-accent);
+    font-size: clamp(.8rem,3vw,.9rem);
+}
+
+/* ======================================
+   RESPONSIVE
+====================================== */
+@media (max-width: 768px) {
+    .header { padding: 45px 10px 20px; }
+    .admin-btn { width: 40px; height: 40px; font-size: 18px; }
+    .modal-content { padding: 25px 20px; width: 95%; }
+    .admin-panel { padding: 15px 10px; margin: 15px 5px; }
+    .moto-selector { grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+    .moto-item { width: 90%; margin: 0 auto; }
+}
+
+@media (max-width: 480px) {
+    .moto-selector { grid-template-columns: 1fr; max-height: 300px; }
+    .admin-btn { width: 38px; height: 38px; font-size: 16px; }
+}
+
+/* ======================================
+   PRINT
+====================================== */
+@media print {
+    body * { visibility: hidden; }
+    .pdf-preview, .pdf-preview * { visibility: visible; }
+    .pdf-preview { position: absolute; left: 0; top: 0; width: 100%; }
+    .btn-primary { display: none !important; }
+}
