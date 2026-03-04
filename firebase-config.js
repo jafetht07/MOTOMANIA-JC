@@ -12,7 +12,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.firestore();
+const db             = firebase.firestore();
 const motosCollection = db.collection('motorcycles');
+const storage        = firebase.storage();
 
-console.log('✅ Firebase inicializado correctamente');
+console.log('✅ Firebase + Storage inicializado');
