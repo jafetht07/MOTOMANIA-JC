@@ -73,7 +73,10 @@ function showModels() {
         container.innerHTML = brandMotos.map(moto => `
             <div class="moto-item">
                 ${moto.imageUrl
-                    ? `<img src="${moto.imageUrl}" alt="${moto.model}" class="moto-image" onerror="this.style.display='none'">`
+                    ? `<div class="moto-image-wrapper">
+                         <img src="${moto.imageUrl}" alt="${moto.model}" class="moto-image"
+                              onerror="this.closest('.moto-image-wrapper').style.display='none'">
+                       </div>`
                     : ''
                 }
                 <h3>${moto.model}</h3>
