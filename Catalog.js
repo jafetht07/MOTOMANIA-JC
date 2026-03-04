@@ -1,7 +1,39 @@
 // ======================================
 // MÓDULO DE CATÁLOGO PÚBLICO
-// Logos cargados desde Firebase
+// Logos: Firebase primero, GitHub como respaldo
 // ======================================
+
+const GITHUB_BASE = 'https://jafetht07.github.io/MOTOMANIA-JC/';
+
+// Logos que ya están en GitHub — respaldo automático
+const githubLogos = {
+    'Benelli':      GITHUB_BASE + 'Benelli-logo.jpeg',
+    'Formula':      GITHUB_BASE + 'Formula-logo.jpeg',
+    'Freedom':      GITHUB_BASE + 'Freedom-logo.jpeg',
+    'Haojue':       GITHUB_BASE + 'Haojue-logo.jpeg',
+    'Honda':        GITHUB_BASE + 'Honda-logo.jpeg',
+    'KTM':          GITHUB_BASE + 'KTM-logo.jpeg',
+    'Katana':       GITHUB_BASE + 'Katana-logo.jpeg',
+    'Yamaha':       GITHUB_BASE + 'Yamaha-logo.jpeg',
+    'Suzuki':       GITHUB_BASE + 'Suzuki-logo.jpeg',
+    'Bajaj':        GITHUB_BASE + 'Bajaj-logo.jpeg',
+    'TVS':          GITHUB_BASE + 'TVS-logo.jpeg',
+    'Vento':        GITHUB_BASE + 'Vento-logo.jpeg',
+    'Serpento':     GITHUB_BASE + 'Serpento-logo.jpeg',
+    'BICIMOTOS':    GITHUB_BASE + 'Bicimotos-logo.jpeg',
+    'Cuadraciclos': GITHUB_BASE + 'Cuadraciclos-logo.jpeg',
+};
+
+// ── Obtener logo de una marca (Firebase primero, GitHub como respaldo) ──
+function getBrandLogo(brandName) {
+    // Buscar en Firebase brands
+    if (typeof brands !== 'undefined') {
+        const fbBrand = brands.find(b => b.name === brandName);
+        if (fbBrand && fbBrand.logoUrl) return fbBrand.logoUrl;
+    }
+    // Respaldo: logo en GitHub
+    return githubLogos[brandName] || '';
+}
 
 // ── Actualizar selector y grid de marcas ──
 function updateBrandsList() {
@@ -14,16 +46,16 @@ function updateBrandsList() {
         select.innerHTML += `<option value="${brand}">${brand}</option>`;
     });
 
-    // Grid de logos — usa logos de Firebase si existen, si no emoji
+    // Grid de logos
     const container = document.getElementById('brandsContainer');
     container.innerHTML = brandNames.map(brand => {
-        const brandData = (typeof brands !== 'undefined') ? brands.find(b => b.name === brand) : null;
-        const logoUrl   = brandData ? brandData.logoUrl : '';
+        const logoUrl = getBrandLogo(brand);
         return `
             <div class="brand" onclick="showBrandMotos('${brand}')">
                 ${logoUrl
                     ? `<div class="brand-logo-wrapper">
-                           <img src="${logoUrl}" alt="${brand}" onerror="this.closest('.brand-logo-wrapper').innerHTML='<span style=font-size:2rem>🏍️</span>'">
+                           <img src="${logoUrl}" alt="${brand}"
+                                onerror="this.closest('.brand-logo-wrapper').innerHTML='<span style=font-size:2rem>🏍️</span>'">
                        </div>`
                     : `<div style="width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:2rem;">🏍️</div>`
                 }
@@ -33,7 +65,7 @@ function updateBrandsList() {
     }).join('');
 }
 
-// ── Mostrar motos de una marca (desde el grid) ──
+// ── Mostrar motos al clicar una marca en el grid ──
 function showBrandMotos(brand) {
     document.getElementById('marca').value = brand;
     showModels();
