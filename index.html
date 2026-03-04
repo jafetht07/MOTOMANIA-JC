@@ -46,8 +46,51 @@
         <!-- Tabs -->
         <div class="admin-tabs">
             <button class="tab-btn active"  onclick="switchTab('manage')">⚙️ Gestionar Motos</button>
+            <button class="tab-btn"         onclick="switchTab('brands')">🏷️ Marcas</button>
             <button class="tab-btn"         onclick="switchTab('pdf')">📄 Generar Volante</button>
             <button class="tab-btn"         onclick="switchTab('stats')">📊 Estadísticas</button>
+        </div>
+
+        <!-- ── Tab: Gestionar Marcas ── -->
+        <div id="brandsTab" class="tab-content">
+            <!-- Formulario nueva marca -->
+            <div class="pdf-generator" style="margin-bottom:25px;">
+                <h3 style="color:var(--text-accent);margin-bottom:20px;">🏷️ Agregar / Editar Marca</h3>
+                <form id="brandForm" onsubmit="saveBrand(event)">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;">
+                        <div class="form-group">
+                            <label>Nombre de la Marca</label>
+                            <input type="text" id="brandName" placeholder="Ej: Kawasaki" required>
+                        </div>
+                        <div class="form-group" style="grid-column:1/-1;">
+                            <label>📷 Logo de la Marca</label>
+                            <div style="display:flex;flex-direction:column;gap:10px;">
+                                <input type="file" id="brandLogoFile" accept="image/*"
+                                    onchange="previewBrandLogo(this)"
+                                    style="padding:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;width:100%;box-sizing:border-box;">
+                                <div id="brandLogoPreviewContainer" style="display:none;text-align:center;">
+                                    <img id="brandLogoPreview" style="max-height:100px;border-radius:8px;object-fit:contain;border:2px solid #f57c00;background:#fff;padding:8px;">
+                                </div>
+                                <div style="text-align:center;color:#888;font-size:12px;">— o pega una URL del logo —</div>
+                                <input type="text" id="brandLogoUrl" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="editingBrandId">
+                    <div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">
+                        <button type="submit" id="brandSubmitBtn" class="btn-primary" style="flex:1;min-width:150px;">➕ Agregar Marca</button>
+                        <button type="button" class="btn-secondary" style="flex:1;min-width:150px;" onclick="cancelBrandEdit()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de marcas -->
+            <div class="pdf-generator">
+                <h3 style="color:var(--text-accent);margin-bottom:15px;">📋 Marcas Registradas</h3>
+                <div id="brandListContainer">
+                    <p style="color:#999;text-align:center;">Cargando marcas...</p>
+                </div>
+            </div>
         </div>
 
         <!-- ── Tab: Gestionar Motos ── -->
@@ -78,24 +121,14 @@
                             <label>Año</label>
                             <input type="text" id="year" placeholder="Ej: 2026" required>
                         </div>
-                        <div class="form-group" style="grid-column:1/-1;">
-                            <label>📷 Foto de la moto</label>
-                            <div style="display:flex;flex-direction:column;gap:10px;">
-                                <input type="file" id="imageFile" accept="image/*" capture="environment"
-                                    onchange="previewImage(this)"
-                                    style="padding:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;width:100%;box-sizing:border-box;">
-                                <div id="imagePreviewContainer" style="display:none;text-align:center;">
-                                    <img id="imagePreview" style="max-height:150px;border-radius:8px;object-fit:contain;border:2px solid #f57c00;">
-                                </div>
-                                <div style="text-align:center;color:#888;font-size:12px;">— o pega una URL —</div>
-                                <input type="text" id="imageUrl" placeholder="https://...">
-                            </div>
+                        <div class="form-group">
+                            <label>URL de Imagen (opcional)</label>
+                            <input type="text" id="imageUrl" placeholder="https://...">
                         </div>
                     </div>
                     <div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">
                         <button type="submit" id="submitBtn" class="btn-primary" style="flex:1;min-width:150px;">Agregar Moto</button>
                         <button type="button" class="btn-secondary" style="flex:1;min-width:150px;" onclick="cancelEdit()">Cancelar</button>
-                        <button type="button" onclick="resetToDefault()" style="flex:1;min-width:150px;background:#555;color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-size:14px;">🔄 Restablecer catálogo</button>
                     </div>
                 </form>
             </div>
@@ -176,7 +209,7 @@
     </footer>
 
     <!-- ===== SCRIPTS ===== -->
-    <!-- Firebase -->
+    <!-- Firebase (CDN - compat version) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
@@ -186,13 +219,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- Módulos de la app (orden importante) -->
-    <script src="firebase-config.js"></script>
-    <script src="Auth.js"></script>
-    <script src="Motorcycles.js"></script>
-    <script src="Catalog.js"></script>
-    <script src="Pdf generator.js"></script>
-    <script src="Stats.js"></script>
-    <script src="Tabs.js"></script>
-    <script src="App.js"></script>
+    <script src="group%20js/firebase-config.js"></script>
+    <script src="group%20js/Auth.js"></script>
+    <script src="group%20js/Motorcycles.js"></script>
+    <script src="group%20js/Catalog.js"></script>
+    <script src="group%20js/Pdf%20generator.js"></script>
+    <script src="group%20js/Stats.js"></script>
+    <script src="group%20js/Tabs.js"></script>
+    <script src="group%20js/App.js"></script>
 </body>
 </html>
