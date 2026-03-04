@@ -1,28 +1,48 @@
 // ======================================
-// MÓDULO DE MOTOCICLETAS — Firebase
-// Los cambios se guardan en la nube y
-// todos los visitantes los ven en tiempo real
+// MÓDULO DE MOTOCICLETAS — Firebase + Storage
 // ======================================
 let motorcycles = [];
 let editingMotoId = null;
 
-// ── Cargar motocicletas desde Firebase ──
-async function loadMotorcycles() {
-    try {
-        const snapshot = await motosCollection.orderBy('brand').get();
-        motorcycles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        console.log(`✅ ${motorcycles.length} motocicletas cargadas desde Firebase`);
-        updateBrandsList();
-    } catch (error) {
-        console.error('Error al cargar:', error);
-        showToast('❌ Error al cargar motos: ' + error.message, 'error');
+// ── Preview de imagen al seleccionar archivo ──
+function previewImage(input) {
+    const container = document.getElementById('imagePreviewContainer');
+    const preview   = document.getElementById('imagePreview');
+    const urlInput  = document.getElementById('imageUrl');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+            container.style.display = 'block';
+            urlInput.value = ''; // limpiar URL si selecciona archivo
+        };
+        reader.readAsDataURL(input.files[0]);
     }
 }
 
-// ── Cargar para panel admin ──
-async function loadMotorcyclesForAdmin() {
-    await loadMotorcycles();
-    displayMotorcyclesAdmin();
+// ── Subir imagen a Firebase Storage ──
+async function uploadImage(file, motoName) {
+    const ext      = file.name.split('.').pop();
+    const fileName = `motos/${motoName.replace(/\s+/g, '_')}_${Date.now()}.${ext}`;
+    const ref      = storage.ref(fileName);
+
+    const uploadTask = ref.put(file);
+
+    return new Promise((resolve, reject) => {
+        uploadTask.on('state_changed',
+            snapshot => {
+                const pct = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
+                const btn = document.getElementById('submitBtn');
+                btn.textContent = `⏳ Subiendo foto... ${pct}%`;
+            },
+            reject,
+            async () => {
+                const url = await uploadTask.snapshot.ref.getDownloadURL();
+                resolve(url);
+            }
+        );
+    });
 }
 
 // ── Guardar o actualizar moto ──
@@ -33,17 +53,27 @@ async function saveMoto(event) {
     btn.disabled = true;
     btn.textContent = '⏳ Guardando...';
 
-    const motoData = {
-        brand:    document.getElementById('brand').value.trim(),
-        model:    document.getElementById('model').value.trim(),
-        cc:       document.getElementById('cc').value.trim(),
-        price:    document.getElementById('price').value.trim(),
-        year:     document.getElementById('year').value.trim(),
-        imageUrl: document.getElementById('imageUrl').value.trim() || '',
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-
     try {
+        let imageUrl = document.getElementById('imageUrl').value.trim();
+
+        // Si hay archivo seleccionado, subirlo primero
+        const fileInput = document.getElementById('imageFile');
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+            const brand = document.getElementById('brand').value.trim();
+            const model = document.getElementById('model').value.trim();
+            imageUrl = await uploadImage(fileInput.files[0], `${brand}_${model}`);
+        }
+
+        const motoData = {
+            brand:    document.getElementById('brand').value.trim(),
+            model:    document.getElementById('model').value.trim(),
+            cc:       document.getElementById('cc').value.trim(),
+            price:    document.getElementById('price').value.trim(),
+            year:     document.getElementById('year').value.trim(),
+            imageUrl: imageUrl || '',
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
         if (editingMotoId) {
             await motosCollection.doc(editingMotoId).update(motoData);
             showToast('✅ Moto actualizada correctamente');
@@ -53,13 +83,15 @@ async function saveMoto(event) {
             showToast('✅ Moto agregada correctamente');
         }
 
+        // Limpiar formulario
         document.getElementById('motoForm').reset();
+        document.getElementById('imagePreviewContainer').style.display = 'none';
         editingMotoId = null;
         btn.textContent = 'Agregar Moto';
         loadMotorcyclesForAdmin();
 
     } catch (error) {
-        console.error('Error al guardar:', error);
+        console.error('Error:', error);
         showToast('❌ Error: ' + error.message, 'error');
         btn.textContent = editingMotoId ? '💾 Actualizar Moto' : 'Agregar Moto';
     }
@@ -67,7 +99,26 @@ async function saveMoto(event) {
     btn.disabled = false;
 }
 
-// ── Mostrar lista en admin (agrupada por marca) ──
+// ── Cargar motocicletas desde Firebase ──
+async function loadMotorcycles() {
+    try {
+        const snapshot = await motosCollection.orderBy('brand').get();
+        motorcycles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log(`✅ ${motorcycles.length} motocicletas cargadas`);
+        updateBrandsList();
+    } catch (error) {
+        console.error('Error al cargar:', error);
+        showToast('❌ Error al cargar motos', 'error');
+    }
+}
+
+// ── Cargar para panel admin ──
+async function loadMotorcyclesForAdmin() {
+    await loadMotorcycles();
+    displayMotorcyclesAdmin();
+}
+
+// ── Mostrar lista en admin agrupada por marca ──
 function displayMotorcyclesAdmin() {
     const container = document.getElementById('motoListContainer');
     if (motorcycles.length === 0) {
@@ -85,6 +136,7 @@ function displayMotorcyclesAdmin() {
                 </div>
                 ${motos.map(moto => `
                     <div class="moto-item-admin" style="border-radius:0;border-top:1px solid rgba(255,255,255,0.05);">
+                        ${moto.imageUrl ? `<img src="${moto.imageUrl}" style="width:50px;height:40px;object-fit:contain;border-radius:4px;margin-right:10px;">` : ''}
                         <div class="moto-item-admin-info">
                             <strong style="color:var(--text-accent);">${moto.model}</strong><br>
                             <small style="color:#aaa;">${moto.cc} • <span style="color:#ff9800;font-weight:600;">${moto.price}</span> • ${moto.year}</small>
@@ -111,6 +163,13 @@ function editMoto(id) {
     document.getElementById('price').value    = moto.price;
     document.getElementById('year').value     = moto.year;
     document.getElementById('imageUrl').value = moto.imageUrl || '';
+
+    // Mostrar preview de imagen actual
+    if (moto.imageUrl) {
+        document.getElementById('imagePreview').src = moto.imageUrl;
+        document.getElementById('imagePreviewContainer').style.display = 'block';
+    }
+
     document.getElementById('submitBtn').textContent = '💾 Actualizar Moto';
     document.getElementById('motoForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
     showToast('✏️ Editando: ' + moto.brand + ' ' + moto.model);
@@ -120,6 +179,7 @@ function editMoto(id) {
 function cancelEdit() {
     editingMotoId = null;
     document.getElementById('motoForm').reset();
+    document.getElementById('imagePreviewContainer').style.display = 'none';
     document.getElementById('submitBtn').textContent = 'Agregar Moto';
 }
 
