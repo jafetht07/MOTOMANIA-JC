@@ -1,5 +1,7 @@
 // ======================================
-// GENERADOR DE VOLANTES — Hoja completa
+// GENERADOR DE VOLANTES
+// Todas las imágenes se convierten a base64
+// para evitar "Tainted canvas" error
 // ======================================
 
 function loadMotoSelector() {
@@ -43,23 +45,52 @@ function updateSelectedCount() {
     });
 }
 
-// ── Convertir imagen a base64 via proxy ──
+// ── Convertir CUALQUIER imagen a base64 usando canvas ──
 async function toBase64(url) {
     if (!url) return null;
-    // Si ya es base64 o GitHub Pages, usar directo
-    if (url.startsWith('data:') || url.includes('github.io')) return url;
+    if (url.startsWith('data:')) return url; // ya es base64
+
+    return new Promise(resolve => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+
+        img.onload = () => {
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width  = img.naturalWidth  || img.width;
+                canvas.height = img.naturalHeight || img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                resolve(canvas.toDataURL('image/jpeg', 0.85));
+            } catch {
+                // Si falla con crossOrigin, intentar sin él
+                loadWithoutCORS(url, resolve);
+            }
+        };
+
+        img.onerror = () => loadWithoutCORS(url, resolve);
+
+        // Agregar timestamp para evitar caché con CORS incorrecto
+        img.src = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
+    });
+}
+
+// ── Fallback: cargar via proxy si crossOrigin falla ──
+async function loadWithoutCORS(url, resolve) {
     try {
         const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-        const res   = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
-        if (!res.ok) throw new Error('failed');
+        const res   = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
+        if (!res.ok) throw new Error();
         const blob  = await res.blob();
-        return new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+        const fr    = new FileReader();
+        fr.onload   = () => resolve(fr.result);
+        fr.onerror  = () => resolve(null);
+        fr.readAsDataURL(blob);
     } catch {
-        return url; // fallback URL original
+        resolve(null); // sin imagen, mostrar emoji
     }
 }
 
-// ── Página completa como tabla HTML con altura exacta ──
 function buildPage(motos, pageNum, totalPages, imgCache) {
     const dark   = pageNum % 2 === 0;
     const pageBg = dark ? '#111111' : '#ff9800';
@@ -73,39 +104,26 @@ function buildPage(motos, pageNum, totalPages, imgCache) {
     const sub    = pageNum === 1 ? '¡Las Mejores Motos al Mejor Precio!' : '¡Variedad y Calidad Garantizada!';
     const isLast = pageNum === totalPages;
 
-    // A4: 794px a 96dpi aprox. Carta: 816x1056px
-    // Usamos 780x1010 para el contenido
-    const PW = 780;  // ancho total página
-    const PH = 1010; // alto total página
-    const PAD = 12;  // padding
-
+    const PW = 780; const PH = 1010; const PAD = 12;
     const headerH = 58;
     const footerH = isLast ? 115 : 0;
     const gridH   = PH - headerH - footerH - PAD * 2 - (isLast ? PAD : 0);
-
     const rows = Math.ceil(motos.length / 3);
     const cols = 3;
     const gap  = 8;
     const cardW = Math.floor((PW - PAD * 2 - gap * (cols - 1)) / cols);
     const cardH = Math.floor((gridH - gap * (rows - 1)) / rows);
-    const imgH  = cardH - 80; // reservar espacio para texto
+    const imgH  = cardH - 78;
 
     const cards = motos.map(moto => {
-        const src = (moto.imageUrl && imgCache[moto.imageUrl]) ? imgCache[moto.imageUrl] : (moto.imageUrl || '');
+        const src = imgCache[moto.imageUrl] || null;
         return `
-        <div style="
-            width:${cardW}px;height:${cardH}px;
-            background:${cardBg};
-            border:2px solid ${dark?'#333':'#eeeeee'};
-            border-radius:10px;
-            overflow:hidden;
-            display:inline-flex;
-            flex-direction:column;
-            vertical-align:top;
-            flex-shrink:0;
-        ">
+        <div style="width:${cardW}px;height:${cardH}px;background:${cardBg};border:2px solid ${dark?'#333':'#eee'};border-radius:10px;overflow:hidden;display:inline-flex;flex-direction:column;vertical-align:top;flex-shrink:0;">
             <div style="height:${imgH}px;background:${imgBg};display:flex;align-items:center;justify-content:center;padding:4px;overflow:hidden;flex-shrink:0;">
-                ${src ? `<img src="${src}" style="max-width:100%;max-height:${imgH-8}px;object-fit:contain;display:block;">` : '<span style="font-size:32px;">🏍️</span>'}
+                ${src
+                    ? `<img src="${src}" style="max-width:100%;max-height:${imgH-8}px;object-fit:contain;display:block;">`
+                    : `<span style="font-size:32px;">🏍️</span>`
+                }
             </div>
             <div style="padding:6px 8px 8px;flex:1;display:flex;flex-direction:column;justify-content:space-between;">
                 <div>
@@ -113,14 +131,11 @@ function buildPage(motos, pageNum, totalPages, imgCache) {
                     <div style="color:${nameC};font-size:13px;font-weight:800;line-height:1.2;margin:1px 0 2px;">${moto.model}</div>
                     <div style="color:${infoC};font-size:9px;">${moto.cc} • ${moto.year}</div>
                 </div>
-                <div style="background:linear-gradient(135deg,#f57c00,#ff9800);color:#fff;padding:5px 4px;border-radius:6px;font-size:14px;font-weight:900;text-align:center;">
-                    ${moto.price}
-                </div>
+                <div style="background:linear-gradient(135deg,#f57c00,#ff9800);color:#fff;padding:5px 4px;border-radius:6px;font-size:14px;font-weight:900;text-align:center;">${moto.price}</div>
             </div>
         </div>`;
     });
 
-    // Organizar en filas
     const rowsHtml = [];
     for (let r = 0; r < rows; r++) {
         const rowCards = cards.slice(r * cols, (r + 1) * cols);
@@ -128,19 +143,16 @@ function buildPage(motos, pageNum, totalPages, imgCache) {
     }
 
     const footer = isLast ? `
-    <div style="margin-top:${PAD}px;display:flex;gap:8px;height:${footerH - PAD}px;">
+    <div style="margin-top:${PAD}px;display:flex;gap:8px;height:${footerH-PAD}px;">
         <div style="flex:1;background:${dark?'#1e1e1e':'rgba(0,0,0,0.15)'};border-radius:8px;padding:8px;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;">
             <div style="font-size:11px;font-weight:800;margin-bottom:4px;">🌐 CATÁLOGO COMPLETO</div>
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=65x65&data=https://jafetht07.github.io/MOTOMANIA-JC" style="border-radius:4px;border:2px solid #f57c00;">
-            <div style="font-size:9px;margin-top:3px;opacity:0.9;">jafetht07.github.io/MOTOMANIA-JC</div>
+            <div style="font-size:9px;margin-top:3px;opacity:0.85;">jafetht07.github.io/MOTOMANIA-JC</div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
-            <div style="background:linear-gradient(135deg,#f57c00,#ff9800);border-radius:8px;padding:8px;text-align:center;color:#fff;font-size:11px;font-weight:800;">
-                🏍 FINANCIAMIENTO DISPONIBLE 🏍
-            </div>
-            <div style="flex:1;background:${dark?'#1e1e1e':'rgba(0,0,0,0.15)'};border-radius:8px;padding:8px;color:#fff;font-size:10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
-                <span>☎️ +506 7011 7033</span>
-                <span>☎️ +506 8935 4332</span>
+            <div style="background:linear-gradient(135deg,#f57c00,#ff9800);border-radius:8px;padding:8px;text-align:center;color:#fff;font-size:11px;font-weight:800;">🏍 FINANCIAMIENTO DISPONIBLE 🏍</div>
+            <div style="flex:1;background:${dark?'#1e1e1e':'rgba(0,0,0,0.15)'};border-radius:8px;padding:8px;color:#fff;font-size:10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
+                <span>☎️ +506 7011 7033</span><span>☎️ +506 8935 4332</span>
                 <span>📘 Motomania JC</span>
                 <span style="color:#ff9800;font-weight:700;">¡Tu moto ideal te espera!</span>
             </div>
@@ -148,22 +160,12 @@ function buildPage(motos, pageNum, totalPages, imgCache) {
     </div>` : '';
 
     return `
-    <div style="
-        width:${PW}px;
-        height:${PH}px;
-        background:${pageBg};
-        font-family:Arial,sans-serif;
-        padding:${PAD}px;
-        box-sizing:border-box;
-        overflow:hidden;
-    ">
-        <div style="text-align:center;height:${headerH}px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:0;">
+    <div style="width:${PW}px;height:${PH}px;background:${pageBg};font-family:Arial,sans-serif;padding:${PAD}px;box-sizing:border-box;overflow:hidden;">
+        <div style="text-align:center;height:${headerH}px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
             <h1 style="color:${titleC};font-size:${pageNum===1?'32px':'28px'};font-weight:900;margin:0 0 2px;letter-spacing:2px;">${title}</h1>
             <p style="color:${subC};font-size:11px;margin:0;font-weight:600;">${sub}</p>
         </div>
-        <div style="height:${gridH}px;overflow:hidden;">
-            ${rowsHtml.join('')}
-        </div>
+        <div style="height:${gridH}px;overflow:hidden;">${rowsHtml.join('')}</div>
         ${footer}
     </div>`;
 }
@@ -178,12 +180,11 @@ async function generatePDF() {
     const btn = document.querySelector('[onclick="generatePDF()"]');
     if (btn) { btn.textContent = '⏳ Cargando fotos...'; btn.disabled = true; }
 
-    // Precargar imágenes como base64
+    // Convertir TODAS las imágenes a base64
     const imgCache = {};
-    await Promise.all(selected.map(async moto => {
-        if (moto.imageUrl && !imgCache[moto.imageUrl]) {
-            imgCache[moto.imageUrl] = await toBase64(moto.imageUrl);
-        }
+    const urls = [...new Set(selected.map(m => m.imageUrl).filter(Boolean))];
+    await Promise.all(urls.map(async url => {
+        imgCache[url] = await toBase64(url);
     }));
 
     if (btn) { btn.textContent = '🎨 Generar Vista Previa'; btn.disabled = false; }
@@ -220,17 +221,17 @@ async function generarVolantePDF() {
             btn.textContent = `⏳ Página ${i+1}/${pages.length}...`;
             await new Promise(r => setTimeout(r, 300));
 
-            const inner = pages[i].querySelector('div');
+            const inner  = pages[i].querySelector('div');
             const canvas = await html2canvas(inner, {
                 scale: 2,
                 useCORS: false,
-                allowTaint: true,
+                allowTaint: false,
                 backgroundColor: null,
                 logging: false,
             });
 
             if (i > 0) pdf.addPage();
-            pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, pageH);
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pageW, pageH);
         }
 
         pdf.save('Volante_MotoMania_JC.pdf');
