@@ -1,5 +1,5 @@
 // ======================================
-// GENERADOR DE VOLANTES — Diseño Profesional
+// GENERADOR DE VOLANTES — Con conversión base64 para CORS
 // ======================================
 
 function loadMotoSelector() {
@@ -43,7 +43,7 @@ function loadMotoSelector() {
 function updateSelectedCount() {
     const count = document.querySelectorAll('#motoSelector input:checked').length;
     let text, color;
-    if      (count === 0) { text = '0 motos seleccionadas (recomendado: 6-9 por página)'; color = '#999'; }
+    if      (count === 0) { text = '0 motos seleccionadas'; color = '#999'; }
     else if (count <= 9)  { text = `${count} motos — 1 página`; color = '#4caf50'; }
     else if (count <= 18) { text = `${count} motos — 2 páginas`; color = '#ff9800'; }
     else                  { text = `${count} motos — ${Math.ceil(count/9)} páginas`; color = '#ef5350'; }
@@ -57,148 +57,143 @@ function updateSelectedCount() {
     });
 }
 
-// ── Generar tarjeta de moto ──
-function motoCard(moto, dark = false) {
-    const bg      = dark ? '#1a1a1a' : '#ffffff';
-    const border  = dark ? '2px solid #333' : '2px solid #f0f0f0';
-    const nameCl  = dark ? '#ffffff' : '#111111';
-    const infoCl  = dark ? '#aaaaaa' : '#666666';
-    const brandCl = '#f57c00';
+// ── Convertir URL a base64 para evitar CORS ──
+async function toBase64(url) {
+    try {
+        // Intentar con proxy CORS
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
+        if (!res.ok) throw new Error('proxy failed');
+        const blob = await res.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload  = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    } catch {
+        // Si falla el proxy, devolver la URL original
+        return url;
+    }
+}
+
+// ── Precargar todas las imágenes como base64 ──
+async function preloadImages(motos) {
+    const cache = {};
+    const btn = document.getElementById('pdfPreviewBtn');
+    if (btn) { btn.textContent = '⏳ Cargando fotos...'; btn.disabled = true; }
+
+    await Promise.all(motos.map(async moto => {
+        if (moto.imageUrl && !cache[moto.imageUrl]) {
+            cache[moto.imageUrl] = await toBase64(moto.imageUrl);
+        }
+    }));
+
+    if (btn) { btn.textContent = '🎨 Generar Vista Previa'; btn.disabled = false; }
+    return cache;
+}
+
+function motoCard(moto, dark, imgCache) {
+    const bg     = dark ? '#1e1e1e' : '#ffffff';
+    const border = dark ? '#333'    : '#eeeeee';
+    const nameC  = dark ? '#ffffff' : '#111111';
+    const infoC  = dark ? '#aaaaaa' : '#777777';
+    const imgSrc = imgCache[moto.imageUrl] || moto.imageUrl;
 
     return `
     <div style="
         background:${bg};
-        border:${border};
-        border-radius:12px;
+        border:2px solid ${border};
+        border-radius:10px;
         overflow:hidden;
-        box-shadow:0 4px 15px rgba(0,0,0,${dark?'0.4':'0.1'});
         display:flex;
         flex-direction:column;
+        height:100%;
     ">
         <div style="
-            height:110px;
-            background:${dark?'#111':'#f9f9f9'};
+            flex:1;
+            background:${dark?'#111':'#f5f5f5'};
             display:flex;
             align-items:center;
             justify-content:center;
-            padding:8px;
-            overflow:hidden;
+            padding:6px;
+            min-height:0;
         ">
-            ${moto.imageUrl
-                ? `<img src="${moto.imageUrl}" style="max-width:100%;max-height:100%;object-fit:contain;" crossorigin="anonymous">`
-                : `<span style="font-size:40px;">🏍️</span>`
+            ${imgSrc
+                ? `<img src="${imgSrc}" style="max-width:100%;max-height:100%;object-fit:contain;">`
+                : `<span style="font-size:36px;">🏍️</span>`
             }
         </div>
-        <div style="padding:10px 12px 12px;">
-            <div style="color:${brandCl};font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">
-                ${moto.brand}
-            </div>
-            <div style="color:${nameCl};font-size:15px;font-weight:800;margin-bottom:4px;line-height:1.2;">
-                ${moto.model}
-            </div>
-            <div style="color:${infoCl};font-size:11px;margin-bottom:8px;">
-                ${moto.cc} &nbsp;•&nbsp; ${moto.year}
-            </div>
-            <div style="
-                background:linear-gradient(135deg,#f57c00,#ff9800);
-                color:#fff;
-                padding:7px 10px;
-                border-radius:8px;
-                font-size:16px;
-                font-weight:900;
-                text-align:center;
-            ">
+        <div style="padding:8px 10px 10px;flex-shrink:0;">
+            <div style="color:#f57c00;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;">${moto.brand}</div>
+            <div style="color:${nameC};font-size:14px;font-weight:800;line-height:1.2;margin:2px 0 3px;">${moto.model}</div>
+            <div style="color:${infoC};font-size:10px;margin-bottom:6px;">${moto.cc} • ${moto.year}</div>
+            <div style="background:linear-gradient(135deg,#f57c00,#ff9800);color:#fff;padding:6px;border-radius:6px;font-size:15px;font-weight:900;text-align:center;">
                 ${moto.price}
             </div>
         </div>
     </div>`;
 }
 
-// ── Generar página ──
-function buildPage(motos, pageNum, totalPages) {
-    const dark    = pageNum % 2 === 0; // páginas pares oscuras
-    const pageBg  = dark ? '#111111' : '#ff9800';
-    const titleCl = dark ? '#ff9800' : '#ffffff';
-    const subCl   = dark ? '#cccccc' : 'rgba(255,255,255,0.9)';
-
-    const title    = pageNum === 1 ? 'MOTOMANIA JC'   : 'MÁS MODELOS';
-    const subtitle = pageNum === 1 ? '¡Las Mejores Motos al Mejor Precio!' : '¡Variedad y Calidad Garantizada!';
-
+function buildPage(motos, pageNum, totalPages, imgCache) {
+    const dark   = pageNum % 2 === 0;
+    const pageBg = dark ? '#111111' : '#ff9800';
+    const titleC = dark ? '#ff9800' : '#ffffff';
+    const subC   = dark ? '#cccccc' : 'rgba(255,255,255,0.9)';
+    const title  = pageNum === 1 ? 'MOTOMANIA JC' : 'MÁS MODELOS';
+    const sub    = pageNum === 1 ? '¡Las Mejores Motos al Mejor Precio!' : '¡Variedad y Calidad Garantizada!';
     const isLast = pageNum === totalPages;
+    const cols   = 3;
+    const rows   = Math.ceil(motos.length / cols);
 
     return `
     <div style="
         width:190mm;
-        min-height:270mm;
+        height:277mm;
         background:${pageBg};
         font-family:Arial,sans-serif;
-        padding:16px;
+        padding:10px;
         box-sizing:border-box;
         display:flex;
         flex-direction:column;
+        overflow:hidden;
     ">
-        <!-- Header -->
-        <div style="text-align:center;margin-bottom:14px;">
-            <h1 style="
-                color:${titleCl};
-                font-size:${pageNum===1?'38px':'34px'};
-                font-weight:900;
-                margin:0 0 4px 0;
-                letter-spacing:2px;
-                text-shadow:0 2px 8px rgba(0,0,0,0.3);
-            ">${title}</h1>
-            <p style="color:${subCl};font-size:13px;margin:0;font-weight:600;">${subtitle}</p>
+        <div style="text-align:center;margin-bottom:8px;flex-shrink:0;">
+            <h1 style="color:${titleC};font-size:${pageNum===1?'34px':'30px'};font-weight:900;margin:0 0 2px;letter-spacing:2px;">${title}</h1>
+            <p style="color:${subC};font-size:12px;margin:0;font-weight:600;">${sub}</p>
         </div>
 
-        <!-- Grid de motos -->
         <div style="
             display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:10px;
+            grid-template-columns:repeat(${cols},1fr);
+            grid-template-rows:repeat(${rows},1fr);
+            gap:8px;
             flex:1;
+            min-height:0;
         ">
-            ${motos.map(m => motoCard(m, dark)).join('')}
+            ${motos.map(m => `
+                <div style="min-height:0;display:flex;flex-direction:column;">
+                    ${motoCard(m, dark, imgCache)}
+                </div>
+            `).join('')}
         </div>
 
-        <!-- Footer solo en última página -->
         ${isLast ? `
-        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <!-- QR + web -->
-            <div style="
-                background:${dark?'#1a1a1a':'rgba(0,0,0,0.15)'};
-                border-radius:10px;
-                padding:12px;
-                text-align:center;
-                color:${dark?'#fff':'#fff'};
-            ">
-                <div style="font-size:13px;font-weight:800;margin-bottom:6px;">🌐 CATÁLOGO COMPLETO</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://jafetht07.github.io/MOTOMANIA-JC"
-                     style="border-radius:6px;border:2px solid #f57c00;" crossorigin="anonymous">
-                <div style="font-size:10px;margin-top:4px;opacity:0.9;">jafetht07.github.io/<br>MOTOMANIA-JC</div>
+        <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0;">
+            <div style="background:${dark?'#1e1e1e':'rgba(0,0,0,0.15)'};border-radius:8px;padding:10px;text-align:center;color:#fff;">
+                <div style="font-size:12px;font-weight:800;margin-bottom:4px;">🌐 CATÁLOGO COMPLETO</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=https://jafetht07.github.io/MOTOMANIA-JC"
+                     style="border-radius:4px;border:2px solid #f57c00;">
+                <div style="font-size:9px;margin-top:3px;opacity:0.9;">jafetht07.github.io/MOTOMANIA-JC</div>
             </div>
-            <!-- Contacto -->
-            <div style="display:flex;flex-direction:column;gap:8px;">
-                <div style="
-                    background:linear-gradient(135deg,#f57c00,#ff9800);
-                    border-radius:10px;
-                    padding:10px 12px;
-                    text-align:center;
-                    color:#fff;
-                    font-size:13px;
-                    font-weight:800;
-                ">🏍 FINANCIAMIENTO<br>DISPONIBLE 🏍</div>
-                <div style="
-                    background:${dark?'#1a1a1a':'rgba(0,0,0,0.15)'};
-                    border-radius:10px;
-                    padding:10px 12px;
-                    color:#fff;
-                    font-size:12px;
-                    text-align:center;
-                ">
-                    <strong style="font-size:13px;">📍 VISÍTANOS</strong><br><br>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="background:linear-gradient(135deg,#f57c00,#ff9800);border-radius:8px;padding:8px;text-align:center;color:#fff;font-size:12px;font-weight:800;">
+                    🏍 FINANCIAMIENTO DISPONIBLE 🏍
+                </div>
+                <div style="background:${dark?'#1e1e1e':'rgba(0,0,0,0.15)'};border-radius:8px;padding:8px;color:#fff;font-size:11px;text-align:center;flex:1;">
                     ☎️ +506 7011 7033<br>
                     ☎️ +506 8935 4332<br>
-                    📘 Motomania JC<br><br>
+                    📘 Motomania JC<br>
                     <span style="color:#ff9800;font-weight:700;">¡Tu moto ideal te espera!</span>
                 </div>
             </div>
@@ -207,29 +202,30 @@ function buildPage(motos, pageNum, totalPages) {
     </div>`;
 }
 
-function generatePDF() {
+async function generatePDF() {
     const selected = [];
     document.querySelectorAll('#motoSelector input:checked').forEach(cb => {
         selected.push(motorcycles[parseInt(cb.id.split('-')[1])]);
     });
 
-    if (selected.length === 0) {
-        alert('⚠️ Selecciona al menos una moto');
-        return;
-    }
+    if (selected.length === 0) { alert('⚠️ Selecciona al menos una moto'); return; }
 
-    // Dividir en páginas de 9
+    const btn = document.querySelector('[onclick="generatePDF()"]');
+    if (btn) { btn.textContent = '⏳ Cargando fotos...'; btn.disabled = true; }
+
+    // Precargar todas las imágenes como base64
+    const imgCache = await preloadImages(selected);
+
+    if (btn) { btn.textContent = '🎨 Generar Vista Previa'; btn.disabled = false; }
+
     const pages = [];
-    for (let i = 0; i < selected.length; i += 9) {
-        pages.push(selected.slice(i, i + 9));
-    }
+    for (let i = 0; i < selected.length; i += 9) pages.push(selected.slice(i, i + 9));
 
-    document.getElementById('pdfContent').innerHTML = pages
-        .map((motos, i) => `
-            <div style="margin-bottom:20px;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.3);">
-                ${buildPage(motos, i + 1, pages.length)}
-            </div>
-        `).join('');
+    document.getElementById('pdfContent').innerHTML = pages.map((motos, i) => `
+        <div style="margin-bottom:20px;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+            ${buildPage(motos, i + 1, pages.length, imgCache)}
+        </div>
+    `).join('');
 
     document.getElementById('pdfPreview').style.display = 'block';
     document.getElementById('pdfPreview').scrollIntoView({ behavior: 'smooth' });
@@ -246,40 +242,26 @@ async function generarVolantePDF() {
 
     try {
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pageW  = pdf.internal.pageSize.getWidth();
-        const pageH  = pdf.internal.pageSize.getHeight();
-        const margin = 8;
+        const pdf   = new jsPDF('p', 'mm', 'letter');
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
 
         for (let i = 0; i < pages.length; i++) {
             btn.textContent = `⏳ Página ${i+1}/${pages.length}...`;
-
-            // Esperar imágenes
-            const imgs = pages[i].querySelectorAll('img');
-            await Promise.all([...imgs].map(img =>
-                img.complete ? Promise.resolve() :
-                new Promise(r => { img.onload = r; img.onerror = r; })
-            ));
-            await new Promise(r => setTimeout(r, 400));
+            await new Promise(r => setTimeout(r, 300));
 
             const canvas = await html2canvas(pages[i], {
                 scale: 2,
-                useCORS: true,
+                useCORS: false,   // false porque ya convertimos a base64
                 allowTaint: true,
                 backgroundColor: null,
                 logging: false,
+                width: pages[i].scrollWidth,
+                height: pages[i].scrollHeight,
             });
 
             if (i > 0) pdf.addPage();
-
-            const usableW = pageW - margin * 2;
-            const imgH    = canvas.height * usableW / canvas.width;
-            const finalH  = Math.min(imgH, pageH - margin * 2);
-            const scale   = finalH / imgH;
-            const finalW  = usableW * scale;
-            const offsetX = (pageW - finalW) / 2;
-
-            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', offsetX, margin, finalW, finalH);
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, pageH);
         }
 
         pdf.save('Volante_MotoMania_JC.pdf');
