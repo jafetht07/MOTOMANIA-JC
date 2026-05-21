@@ -121,11 +121,12 @@ const todasLasMotos = [
     { brand: 'Haojue', model: 'DL160',     cc: '160cc', price: '₡2.164.900', year: '2026', imageUrl: BASE + 'Haojue DL160.jpeg' },
     { brand: 'Haojue', model: 'DR160S',    cc: '160cc', price: '₡1.978.900', year: '2026', imageUrl: BASE + 'Haojue DR160S.jpeg' },
     { brand: 'Haojue', model: 'NK150S',    cc: '150cc', price: '₡1.928.900', year: '2026', imageUrl: BASE + 'Haojue NK150S INYECTADA.jpeg' },
-    { brand: 'Haojue', model: 'NK150',     cc: '150cc', price: '₡1.791.900', year: '2026', imageUrl: BASE + 'Haojue NK150.jpeg' },
+    { brand: 'Haojue', model: 'NK150',     cc: '150cc', price: '₡1.791.900', year: '2027', imageUrl: BASE + 'Haojue NK150.jpeg' },
     { brand: 'Haojue', model: 'HJ125',     cc: '125cc', price: '₡1.295.900', year: '2026', imageUrl: BASE + 'Haojue HJ150.jpeg' },
     { brand: 'Haojue', model: 'DM125S',    cc: '125cc', price: '₡1.074.900', year: '2026', imageUrl: BASE + 'Haojue DM125S.jpeg' },
     { brand: 'Haojue', model: 'TZ150 PRO', cc: '150cc', price: '₡1.309.900', year: '2026', imageUrl: BASE + 'Haojue TZ150 PRO.jpeg' },
     { brand: 'Haojue', model: 'KA150',     cc: '150cc', price: '₡1.369.900', year: '2026', imageUrl: BASE + 'Haojue KA150.jpeg' },
+    { brand: 'Haojue', model: 'NK160',     cc: '160cc', price: '₡2.130.900', year: '2027', imageUrl: BASE + 'Haojue NK160.jpeg' },
 
     // ── Bajaj (6 modelos) ──
     { brand: 'Bajaj', model: 'PULSAR NS200UG', cc: '200cc', price: '₡2.150.900', year: '2026', imageUrl: BASE + 'Bajaj PULSAR NS 200UG.jpeg' },
